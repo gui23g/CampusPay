@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CampusPay | Operacao de campanhas estudantis</title>
+    <meta
+      name="description"
+      content="Front-end de validacao da CampusPay: campanhas estudantis com checkout, ledger, retirada e relatorio verificavel."
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegacao principal">
+        <div class="brand-row">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <strong>CampusPay</strong>
+            <small>Operacao verificavel</small>
+          </div>
+        </div>
+
+        <div class="org-switcher" aria-label="Organizacao selecionada">
+          <span class="avatar" aria-hidden="true">AE</span>
+          <div>
+            <strong>Atletica Exemplo</strong>
+            <small>Gestao 2026</small>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Areas do produto">
+          <button class="nav-item is-active" data-view="overview" type="button">
+            <span class="nav-icon" aria-hidden="true">⌂</span>
+            Visao geral
+          </button>
+          <button class="nav-item" data-view="campaign" type="button">
+            <span class="nav-icon" aria-hidden="true">□</span>
+            Campanha
+          </button>
+          <button class="nav-item" data-view="checkout" type="button">
+            <span class="nav-icon" aria-hidden="true">◇</span>
+            Checkout
+          </button>
+          <button class="nav-item" data-view="orders" type="button">
+            <span class="nav-icon" aria-hidden="true">≡</span>
+            Pedidos
+          </button>
+          <button class="nav-item" data-view="inventory" type="button">
+            <span class="nav-icon" aria-hidden="true">▦</span>
+            Producao
+          </button>
+          <button class="nav-item" data-view="pickup" type="button">
+            <span class="nav-icon" aria-hidden="true">⌗</span>
+            Retirada
+          </button>
+          <button class="nav-item" data-view="finance" type="button">
+            <span class="nav-icon" aria-hidden="true">$</span>
+            Financeiro
+          </button>
+          <button class="nav-item" data-view="report" type="button">
+            <span class="nav-icon" aria-hidden="true">✓</span>
+            Fechamento
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <span class="label">Hackathon</span>
+          <strong>Track Vida universitaria</strong>
+          <small>Problema real, fit Brasil e Solana sem enfeite.</small>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <span class="label">Campanha ativa</span>
+            <h1>Camiseta Atletica 2026</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="search-box" aria-label="Busca visual">
+              <span aria-hidden="true">⌕</span>
+              <input value="CP-7F91" aria-label="Buscar pedido" readonly />
+            </div>
+            <button class="icon-button" type="button" aria-label="Notificacoes">!</button>
+            <button class="primary-action" type="button" data-jump="report">
+              Fechar campanha
+            </button>
+          </div>
+        </header>
+
+        <section class="view is-visible" id="overview" aria-labelledby="overview-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Centro de comando</span>
+              <h2 id="overview-title">A campanha inteira em uma unica fonte de verdade</h2>
+            </div>
+            <div class="heading-actions">
+              <span class="status-pill success">Pre-venda aberta</span>
+              <span class="status-pill neutral">v1 aprovada</span>
+            </div>
+          </div>
+
+          <section class="stage-strip" aria-label="Estado da campanha">
+            <div class="stage is-complete">
+              <span>01</span>
+              <strong>Aprovada</strong>
+              <small>hash v1 registrado</small>
+            </div>
+            <div class="stage is-current">
+              <span>02</span>
+              <strong>Vendas</strong>
+              <small>meta atingida</small>
+            </div>
+            <div class="stage">
+              <span>03</span>
+              <strong>Producao</strong>
+              <small>lote confirmado</small>
+            </div>
+            <div class="stage">
+              <span>04</span>
+              <strong>Retirada</strong>
+              <small>136 entregues</small>
+            </div>
+            <div class="stage">
+              <span>05</span>
+              <strong>Fechamento</strong>
+              <small>2 pendencias</small>
+            </div>
+          </section>
+
+          <section class="metric-grid" aria-label="Indicadores da campanha">
+            <article class="metric-card">
+              <small>Receita confirmada</small>
+              <strong>R$ 8.340</strong>
+              <span>139 pedidos pagos</span>
+            </article>
+            <article class="metric-card">
+              <small>Meta minima</small>
+              <strong>139%</strong>
+              <span>100 unidades necessarias</span>
+            </article>
+            <article class="metric-card">
+              <small>Conciliacao automatica</small>
+              <strong>98,6%</strong>
+              <span>1 divergencia aberta</span>
+            </article>
+            <article class="metric-card">
+              <small>Retirada</small>
+              <strong>136/139</strong>
+              <span>3 compradores na repescagem</span>
+            </article>
+          </section>
+
+          <div class="two-column wide-left">
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Acoes de hoje</span>
+                  <h3>O que impede o fechamento limpo</h3>
+                </div>
+                <span class="count-badge">4</span>
+              </div>
+              <div class="action-list">
+                <button class="action-row" type="button" data-jump="orders">
+                  <span class="priority high"></span>
+                  <div>
+                    <strong>Pagamento Solana com valor divergente</strong>
+                    <small>Pedido CP-8J42 precisa de ajuste ou reembolso parcial.</small>
+                  </div>
+                  <span>Ver</span>
+                </button>
+                <button class="action-row" type="button" data-jump="finance">
+                  <span class="priority medium"></span>
+                  <div>
+                    <strong>Nota do fornecedor pendente</strong>
+                    <small>Despesa de R$ 4.900 precisa de documento antes do snapshot.</small>
+                  </div>
+                  <span>Ver</span>
+                </button>
+                <button class="action-row" type="button" data-jump="pickup">
+                  <span class="priority low"></span>
+                  <div>
+                    <strong>Repescagem de retirada</strong>
+                    <small>3 compradores nao compareceram na janela principal.</small>
+                  </div>
+                  <span>Ver</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Resumo financeiro</span>
+                  <h3>Previsto versus realizado</h3>
+                </div>
+                <span class="status-pill success">ledger balanceado</span>
+              </div>
+              <div class="finance-bars" aria-label="Barras financeiras">
+                <div>
+                  <span>Receita</span>
+                  <strong>R$ 8.340</strong>
+                  <i style="--size: 100%"></i>
+                </div>
+                <div>
+                  <span>Producao</span>
+                  <strong>R$ 4.900</strong>
+                  <i style="--size: 59%"></i>
+                </div>
+                <div>
+                  <span>Reembolsos</span>
+                  <strong>R$ 180</strong>
+                  <i style="--size: 12%"></i>
+                </div>
+                <div>
+                  <span>Saldo destinado</span>
+                  <strong>R$ 3.260</strong>
+                  <i style="--size: 39%"></i>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="timeline-band">
+            <div>
+              <span class="label">Historico verificavel</span>
+              <h3>Eventos que entram no relatorio</h3>
+            </div>
+            <div class="timeline">
+              <div>
+                <span>10:14</span>
+                <strong>Pedido CP-7F91 confirmado via Pix</strong>
+              </div>
+              <div>
+                <span>11:03</span>
+                <strong>Reference Solana indexada para CP-4Q22</strong>
+              </div>
+              <div>
+                <span>13:26</span>
+                <strong>Estoque G reservado para retirada</strong>
+              </div>
+              <div>
+                <span>15:40</span>
+                <strong>Retirada CP-4Q22 confirmada</strong>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="campaign" aria-labelledby="campaign-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Campanha versionada</span>
+              <h2 id="campaign-title">Configuracao aprovada antes da venda</h2>
+            </div>
+            <button class="secondary-action" type="button">Solicitar nova versao</button>
+          </div>
+
+          <div class="two-column balanced">
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Dados principais</span>
+                  <h3>Camiseta Atletica 2026</h3>
+                </div>
+                <span class="status-pill success">aprovada</span>
+              </div>
+              <div class="form-grid">
+                <label>
+                  Objetivo
+                  <input value="Pre-venda oficial da camiseta da Atletica" readonly />
+                </label>
+                <label>
+                  Destinacao do saldo
+                  <input value="Compra de materiais esportivos para treinos" readonly />
+                </label>
+                <label>
+                  Periodo de venda
+                  <input value="06/09 a 18/09/2026" readonly />
+                </label>
+                <label>
+                  Quantidade minima
+                  <input value="100 unidades" readonly />
+                </label>
+                <label>
+                  Fornecedor
+                  <input value="Malharia Campus Ltda." readonly />
+                </label>
+                <label>
+                  Prazo de producao
+                  <input value="21 dias apos fechamento da pre-venda" readonly />
+                </label>
+              </div>
+            </section>
+
+            <section class="product-showcase">
+              <img
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=82"
+                alt="Camisetas dobradas para venda"
+              />
+              <div class="product-caption">
+                <div>
+                  <span class="label">Imagem do produto</span>
+                  <strong>Storage: product-images</strong>
+                </div>
+                <button class="secondary-action compact" type="button">Trocar foto</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="two-column wide-right">
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Variantes</span>
+                  <h3>Preco e capacidade</h3>
+                </div>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Tamanho</th>
+                    <th>Preco</th>
+                    <th>Pagos</th>
+                    <th>Estoque</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>P</td>
+                    <td>R$ 60,00</td>
+                    <td>28</td>
+                    <td>28</td>
+                  </tr>
+                  <tr>
+                    <td>M</td>
+                    <td>R$ 60,00</td>
+                    <td>42</td>
+                    <td>42</td>
+                  </tr>
+                  <tr>
+                    <td>G</td>
+                    <td>R$ 60,00</td>
+                    <td>51</td>
+                    <td>52</td>
+                  </tr>
+                  <tr>
+                    <td>GG</td>
+                    <td>R$ 60,00</td>
+                    <td>18</td>
+                    <td>18</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Politica</span>
+                  <h3>Aprovacao e congelamento</h3>
+                </div>
+              </div>
+              <div class="approval-chain">
+                <div class="chain-step is-done">
+                  <span></span>
+                  <div>
+                    <strong>Gestor submeteu campanha</strong>
+                    <small>Produto, preco, fornecedor e MOQ definidos.</small>
+                  </div>
+                </div>
+                <div class="chain-step is-done">
+                  <span></span>
+                  <div>
+                    <strong>Presidente aprovou v1</strong>
+                    <small>Hash da versao aprovado: cpg_v1_91ac.</small>
+                  </div>
+                </div>
+                <div class="chain-step is-done">
+                  <span></span>
+                  <div>
+                    <strong>Tesoureiro validou orcamento</strong>
+                    <small>Despesa prevista de R$ 4.900.</small>
+                  </div>
+                </div>
+                <div class="chain-step">
+                  <span></span>
+                  <div>
+                    <strong>Primeira venda congelou termos</strong>
+                    <small>Novas mudancas criam versao v2.</small>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="checkout" aria-labelledby="checkout-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Pagina publica</span>
+              <h2 id="checkout-title">Comprar sem aprender blockchain</h2>
+            </div>
+            <span class="status-pill neutral">preview comprador</span>
+          </div>
+
+          <div class="checkout-shell">
+            <section class="storefront">
+              <div class="storefront-media">
+                <img
+                  src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=1100&q=82"
+                  alt="Pessoa usando camiseta branca"
+                />
+              </div>
+              <div class="storefront-copy">
+                <span class="label">Atletica Exemplo</span>
+                <h3>Camiseta Atletica 2026</h3>
+                <p>
+                  Pre-venda por lote com retirada no campus. A producao comeca quando
+                  a meta minima for atingida.
+                </p>
+                <div class="public-facts">
+                  <span>Meta 139/100</span>
+                  <span>Retirada 28/09</span>
+                  <span>Reembolso visivel</span>
+                </div>
+              </div>
+            </section>
+
+            <aside class="checkout-panel" aria-label="Resumo do pedido">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Pedido CP-7F91</span>
+                  <h3>R$ 60,00</h3>
+                </div>
+              </div>
+              <div class="option-group" aria-label="Tamanhos">
+                <button type="button">P</button>
+                <button class="is-selected" type="button">M</button>
+                <button type="button">G</button>
+                <button type="button">GG</button>
+              </div>
+              <label>
+                Nome para retirada
+                <input value="Marina Souza" readonly />
+              </label>
+              <label>
+                Janela
+                <select aria-label="Janela de retirada">
+                  <option>28/09, 18h-20h - Quadra central</option>
+                </select>
+              </label>
+              <div class="payment-tabs">
+                <button class="is-selected" type="button" data-payment="pix">Pix</button>
+                <button type="button" data-payment="solana">Solana</button>
+              </div>
+              <div class="payment-preview" data-payment-panel="pix">
+                <div class="qr-card">
+                  <div class="qr-pattern" aria-hidden="true"></div>
+                  <div>
+                    <strong>Pix Copia e Cola</strong>
+                    <small>Identificador unico: CP-7F91-XZ4</small>
+                  </div>
+                </div>
+              </div>
+              <div class="payment-preview" data-payment-panel="solana" hidden>
+                <div class="qr-card">
+                  <div class="qr-pattern chain" aria-hidden="true"></div>
+                  <div>
+                    <strong>USDC Devnet</strong>
+                    <small>reference: ref_cp_7f91_xz4</small>
+                  </div>
+                </div>
+              </div>
+              <button class="primary-action full" type="button" data-jump="orders">
+                Ver pedido confirmado
+              </button>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="orders" aria-labelledby="orders-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Pedidos e reconciliacao</span>
+              <h2 id="orders-title">Cada pagamento precisa cair no pedido certo</h2>
+            </div>
+            <button class="secondary-action" type="button">Exportar CSV</button>
+          </div>
+
+          <section class="surface">
+            <div class="table-toolbar">
+              <div class="segmented-control" aria-label="Filtro de pedidos">
+                <button class="is-selected" type="button">Todos</button>
+                <button type="button">Divergencias</button>
+                <button type="button">Pendentes</button>
+              </div>
+              <span class="status-pill warning">1 divergencia critica</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pedido</th>
+                  <th>Comprador</th>
+                  <th>Item</th>
+                  <th>Rail</th>
+                  <th>Status</th>
+                  <th>Evidencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CP-7F91</td>
+                  <td>Marina S.</td>
+                  <td>Camiseta M</td>
+                  <td>Pix</td>
+                  <td><span class="table-pill success">Pago</span></td>
+                  <td>evt_pix_812</td>
+                </tr>
+                <tr>
+                  <td>CP-4Q22</td>
+                  <td>Lucas R.</td>
+                  <td>Camiseta G</td>
+                  <td>Solana</td>
+                  <td><span class="table-pill success">Entregue</span></td>
+                  <td>3HHx...Q9m</td>
+                </tr>
+                <tr>
+                  <td>CP-8J42</td>
+                  <td>Ana P.</td>
+                  <td>Camiseta P</td>
+                  <td>Solana</td>
+                  <td><span class="table-pill danger">Divergente</span></td>
+                  <td>amount mismatch</td>
+                </tr>
+                <tr>
+                  <td>CP-2K80</td>
+                  <td>Rafael N.</td>
+                  <td>Camiseta GG</td>
+                  <td>Pix</td>
+                  <td><span class="table-pill muted">Pendente</span></td>
+                  <td>aguardando webhook</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="three-column">
+            <section class="surface">
+              <span class="label">Regra</span>
+              <h3>Idempotencia</h3>
+              <p>O mesmo evento externo nao duplica receita nem muda status confirmado.</p>
+            </section>
+            <section class="surface">
+              <span class="label">Regra</span>
+              <h3>Reference</h3>
+              <p>Pagamento onchain precisa bater valor, mint, destinatario e referencia.</p>
+            </section>
+            <section class="surface">
+              <span class="label">Regra</span>
+              <h3>Privacidade</h3>
+              <p>A evidencia publica nao carrega nome, telefone, endereco ou itens por pessoa.</p>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="inventory" aria-labelledby="inventory-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Producao e estoque</span>
+              <h2 id="inventory-title">Da demanda paga ate a unidade retirada</h2>
+            </div>
+            <button class="primary-action" type="button" data-jump="pickup">Abrir retirada</button>
+          </div>
+
+          <div class="two-column wide-left">
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Lote 01</span>
+                  <h3>Malharia Campus Ltda.</h3>
+                </div>
+                <span class="status-pill success">estoque recebido</span>
+              </div>
+              <div class="inventory-grid">
+                <div>
+                  <span>P</span>
+                  <strong>28</strong>
+                  <small>28 reservadas</small>
+                </div>
+                <div>
+                  <span>M</span>
+                  <strong>42</strong>
+                  <small>42 reservadas</small>
+                </div>
+                <div>
+                  <span>G</span>
+                  <strong>52</strong>
+                  <small>51 reservadas</small>
+                </div>
+                <div>
+                  <span>GG</span>
+                  <strong>18</strong>
+                  <small>18 reservadas</small>
+                </div>
+              </div>
+            </section>
+
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Movimentacoes</span>
+                  <h3>Auditoria de estoque</h3>
+                </div>
+              </div>
+              <div class="movement-list">
+                <div>
+                  <span>Entrada</span>
+                  <strong>+140 unidades recebidas</strong>
+                  <small>Operador: Tesoureiro | Documento pendente</small>
+                </div>
+                <div>
+                  <span>Reserva</span>
+                  <strong>-139 unidades alocadas</strong>
+                  <small>Pedidos pagos por variante</small>
+                </div>
+                <div>
+                  <span>Entrega</span>
+                  <strong>-136 unidades retiradas</strong>
+                  <small>QR confirmado no campus</small>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="pickup" aria-labelledby="pickup-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Retirada no campus</span>
+              <h2 id="pickup-title">Handoff rapido sem expor dados demais</h2>
+            </div>
+            <span class="status-pill neutral">fila segura offline-ready</span>
+          </div>
+
+          <div class="pickup-grid">
+            <section class="scanner-phone" aria-label="Preview do scanner">
+              <div class="phone-bar"></div>
+              <div class="camera-area">
+                <div class="scan-frame">
+                  <div class="qr-pattern large" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="handoff-card">
+                <span>Pedido CP-4Q22</span>
+                <strong>Lucas R. | Camiseta G</strong>
+                <small>Janela 18h-20h, Quadra central</small>
+              </div>
+              <button class="primary-action full" type="button">Confirmar retirada</button>
+            </section>
+
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Fila de hoje</span>
+                  <h3>28/09, 18h-20h</h3>
+                </div>
+                <span class="count-badge">43</span>
+              </div>
+              <table class="data-table compact-table">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Item</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CP-4Q22</td>
+                    <td>G</td>
+                    <td><span class="table-pill success">Entregue</span></td>
+                  </tr>
+                  <tr>
+                    <td>CP-6P10</td>
+                    <td>M</td>
+                    <td><span class="table-pill neutral">Na fila</span></td>
+                  </tr>
+                  <tr>
+                    <td>CP-3A77</td>
+                    <td>P</td>
+                    <td><span class="table-pill muted">Nao veio</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="duplicate-alert">
+                <strong>QR ja utilizado</strong>
+                <small>Confirmado por Bia Andrade as 18:42 no dispositivo Scanner-02.</small>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="finance" aria-labelledby="finance-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Tesouraria</span>
+              <h2 id="finance-title">Pix e Solana no mesmo ledger</h2>
+            </div>
+            <button class="secondary-action" type="button">Anexar documento</button>
+          </div>
+
+          <div class="two-column wide-right">
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Ledger de dupla entrada</span>
+                  <h3>Lancamentos confirmados</h3>
+                </div>
+                <span class="status-pill success">debitos = creditos</span>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Evento</th>
+                    <th>Conta</th>
+                    <th>Debito</th>
+                    <th>Credito</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>06/09</td>
+                    <td>payment.confirmed</td>
+                    <td>Caixa Pix BRL</td>
+                    <td>R$ 5.820</td>
+                    <td>-</td>
+                  </tr>
+                  <tr>
+                    <td>06/09</td>
+                    <td>payment.confirmed</td>
+                    <td>Receita campanha</td>
+                    <td>-</td>
+                    <td>R$ 5.820</td>
+                  </tr>
+                  <tr>
+                    <td>07/09</td>
+                    <td>expense.approved</td>
+                    <td>Custo producao</td>
+                    <td>R$ 4.900</td>
+                    <td>-</td>
+                  </tr>
+                  <tr>
+                    <td>07/09</td>
+                    <td>expense.approved</td>
+                    <td>Caixa Pix BRL</td>
+                    <td>-</td>
+                    <td>R$ 4.900</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="surface">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Saldos por rail</span>
+                  <h3>Disponivel e confirmado</h3>
+                </div>
+              </div>
+              <div class="rail-list">
+                <div>
+                  <span>Pix / BRL</span>
+                  <strong>R$ 740</strong>
+                  <small>Conta da organizacao via PSP</small>
+                </div>
+                <div>
+                  <span>USDC / Devnet</span>
+                  <strong>R$ 2.520</strong>
+                  <small>Tesouraria compartilhada</small>
+                </div>
+                <div>
+                  <span>Documentos</span>
+                  <strong>1 pendente</strong>
+                  <small>Bucket privado documents</small>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="report" aria-labelledby="report-title">
+          <div class="page-heading">
+            <div>
+              <span class="label">Fechamento verificavel</span>
+              <h2 id="report-title">Prestacao de contas pronta para conselho ou universidade</h2>
+            </div>
+            <button class="primary-action" type="button" id="tamperButton">Alterar JSON</button>
+          </div>
+
+          <div class="report-grid-layout">
+            <section class="surface report-document">
+              <div class="surface-header">
+                <div>
+                  <span class="label">Relatorio publico sem PII</span>
+                  <h3>Camiseta Atletica 2026</h3>
+                </div>
+                <span class="status-pill success" id="verifyStatus">verificado</span>
+              </div>
+              <div class="report-metrics">
+                <div>
+                  <span>Pedidos pagos</span>
+                  <strong>139</strong>
+                </div>
+                <div>
+                  <span>Receita bruta</span>
+                  <strong>R$ 8.340</strong>
+                </div>
+                <div>
+                  <span>Custos</span>
+                  <strong>R$ 4.900</strong>
+                </div>
+                <div>
+                  <span>Saldo final</span>
+                  <strong>R$ 3.260</strong>
+                </div>
+              </div>
+              <pre class="json-preview" id="reportJson">{
+  "campaign_id": "cmp_opaque_2026",
+  "version": "v1",
+  "gross_minor": 834000,
+  "production_cost_minor": 490000,
+  "refund_minor": 18000,
+  "delivered_orders": 136,
+  "inventory_remaining": 1,
+  "pii": null
+}</pre>
+            </section>
+
+            <aside class="surface verifier">
+              <div class="verified-symbol" id="verifiedSymbol">OK</div>
+              <span class="label">Solana Devnet</span>
+              <h3 id="verifierTitle">Hash local bate com a ancora</h3>
+              <p id="verifierCopy">
+                O relatorio fechado pode ser recalculado e comparado com a transacao
+                publicada, sem revelar compradores.
+              </p>
+              <div class="hash-list">
+                <div>
+                  <span>Hash local</span>
+                  <code id="localHash">8f13...9ac2</code>
+                </div>
+                <div>
+                  <span>Anchor</span>
+                  <code>3HHx...Q9m</code>
+                </div>
+                <div>
+                  <span>Explorer</span>
+                  <code>devnet.solana.com</code>
+                </div>
+              </div>
+              <button class="secondary-action full" type="button">Abrir explorer</button>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./scripts/main.js"></script>
+  </body>
+</html>
