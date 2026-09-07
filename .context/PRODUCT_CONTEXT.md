@@ -1,7 +1,7 @@
 # CampusPay — contexto mestre de produto e engenharia
 
 > **Status:** documento-base para descoberta, protótipo, hackathon e implementação do MVP  
-> **Atualizado em:** 06 de setembro de 2026  
+> **Atualizado em:** 07 de setembro de 2026
 > **Responsabilidade:** Product + Tech Lead  
 > **Regra:** este documento é a fonte de verdade. Decisões divergentes precisam ser registradas na seção de ADRs antes de entrar no produto.
 
@@ -241,6 +241,25 @@ Em português: infraestrutura de campanhas e tesouraria verificável para organi
 
 ## 6. Escopo funcional
 
+### 6.0 Estado implementado no repositório
+
+Em 07 de setembro de 2026, o repositório passou a ter uma versão final do MVP em `web/`:
+
+- Next.js/TypeScript com rotas reais;
+- área de gestão em `/app`;
+- marketplace local em `/campus/:slug`;
+- checkout público em `/c/:campaignSlug`;
+- conta do comprador em `/me`;
+- relatório público em `/reports/:publicId`;
+- tema claro/noturno;
+- upload de imagem preparado para Supabase Storage;
+- helper Solana Pay com reference por pedido;
+- JSON canônico e hash SHA-256 do relatório;
+- schema Supabase inicial em `supabase/schema.sql`;
+- setup completo em `docs/setup.md`.
+
+O repositório está focado na aplicação final em `web/`.
+
 ### 6.1 P0 — MVP essencial
 
 #### Identidade e organização
@@ -251,6 +270,8 @@ Em português: infraestrutura de campanhas e tesouraria verificável para organi
 - Convite de membros e RBAC.
 - Registro de mandato/período de gestão.
 - Política básica de aprovação e tesouraria.
+- Conta do comprador separada da área de gestão, com pedidos, retirada, pagamentos, preferências e suporte.
+- Logs de atividade da organização para revisão operacional e auditoria.
 
 #### Campanhas
 
@@ -263,6 +284,7 @@ Em português: infraestrutura de campanhas e tesouraria verificável para organi
 
 #### Pedidos e checkout
 
+- Marketplace local/campus para descoberta de campanhas ativas.
 - Página pública da campanha.
 - Carrinho simples de uma única organização/campanha.
 - Identificação mínima do comprador.
@@ -310,6 +332,15 @@ Em português: infraestrutura de campanhas e tesouraria verificável para organi
 - Hash do snapshot ancorado em Solana.
 - Exportação em PDF/CSV.
 
+#### Marketplace e conta do comprador
+
+- Vitrine local por campus para campanhas ativas.
+- Filtros simples por categoria, prazo e status.
+- Página de campanha sem navegação administrativa.
+- Área "Minha conta" com pedidos, QR/PIN de retirada, dados do campus, métodos de pagamento, preferências, segurança e suporte.
+- Histórico do comprador limitado aos próprios pedidos.
+- Marketplace nacional/multivendedor amplo permanece fora do MVP.
+
 ### 6.2 P1 — piloto real
 
 - Integração Pix Cobrança com PSP e webhooks.
@@ -346,7 +377,7 @@ Em português: infraestrutura de campanhas e tesouraria verificável para organi
 - Rendimento sobre saldo.
 - Custódia própria de reais.
 - Conta de pagamento própria.
-- Marketplace nacional multivendedor no MVP.
+- Marketplace nacional multivendedor no MVP; a vitrine local por campus é permitida apenas como entrada para campanhas.
 - Entrega porta a porta feita por voluntários como padrão.
 - Armazenamento de PII, nota fiscal ou endereço onchain.
 - Votação onchain para cada decisão operacional.
@@ -475,6 +506,24 @@ Em português: infraestrutura de campanhas e tesouraria verificável para organi
 9. Campanha passa para `CLOSED`.
 10. Relatório e pendências entram no pacote de handover.
 
+### 8.8 Marketplace local do campus
+
+1. Comprador acessa a vitrine do próprio campus.
+2. Sistema lista campanhas ativas e públicas, derivadas das campanhas aprovadas.
+3. Comprador filtra por categoria, prazo ou organização.
+4. Comprador abre uma campanha específica.
+5. Checkout mantém a organização como vendedora responsável.
+6. Marketplace não cria estado financeiro separado; pedido, pagamento e relatório continuam vinculados à campanha.
+
+### 8.9 Minha conta do comprador
+
+1. Comprador acessa seus pedidos.
+2. Sistema mostra status em linguagem humana: pagamento, produção, pronto para retirada, entregue ou reembolsado.
+3. Pedido liberado mostra QR/PIN de retirada.
+4. Comprador gerencia dados mínimos, campus, preferência de pagamento e notificações.
+5. Suporte e comprovantes ficam vinculados ao pedido.
+6. Comprador não acessa ledger interno, documentos financeiros ou dados de outros compradores.
+
 ---
 
 ## 9. Máquinas de estado
@@ -598,15 +647,16 @@ flowchart LR
 1. Identity & Access.
 2. Organization & Governance.
 3. Campaign & Catalog.
-4. Orders & Checkout.
-5. Payments & Reconciliation.
-6. Ledger & Expenses.
-7. Production & Inventory.
-8. Fulfillment & Delivery.
-9. Reports & Audit.
-10. Blockchain Anchoring.
-11. Notifications.
-12. Institutional Administration.
+4. Marketplace & Buyer Account.
+5. Orders & Checkout.
+6. Payments & Reconciliation.
+7. Ledger & Expenses.
+8. Production & Inventory.
+9. Fulfillment & Delivery.
+10. Reports & Audit.
+11. Blockchain Anchoring.
+12. Notifications.
+13. Institutional Administration.
 
 ### 10.3 Princípio de separação
 
@@ -917,9 +967,12 @@ Antes de integrar Uber/99:
 ### 14.1 Entidades principais
 
 - `User`
+- `BuyerProfile`
+- `UserPreference`
 - `Institution`
 - `Organization`
 - `OrganizationMembership`
+- `OrganizationInvite`
 - `Mandate`
 - `GovernancePolicy`
 - `Campaign`
@@ -1005,6 +1058,29 @@ Antes de integrar Uber/99:
 - IP truncado/metadata mínima conforme política;
 - created_at imutável.
 
+#### BuyerProfile
+
+- user_id;
+- display_name;
+- student_email opcional;
+- phone opcional;
+- primary_institution_id;
+- primary_campus;
+- default_pickup_preference;
+- preferred_payment_rail;
+- privacy_settings;
+
+#### OrganizationInvite
+
+- organization_id;
+- email;
+- invited_role;
+- invited_by;
+- status;
+- expires_at;
+- accepted_at;
+- revoked_at.
+
 ### 14.3 Multi-tenancy
 
 - Toda tabela operacional relevante inclui `organization_id` ou deriva de entidade que o possua.
@@ -1022,7 +1098,10 @@ Antes de integrar Uber/99:
 ```text
 POST   /organizations
 POST   /organizations/:id/members
+POST   /organizations/:id/invites
+POST   /organizations/:id/invites/:inviteId/revoke
 PUT    /organizations/:id/governance-policy
+GET    /organizations/:id/audit-events
 
 POST   /campaigns
 POST   /campaigns/:id/submit
@@ -1033,9 +1112,17 @@ POST   /campaigns/:id/close-sales
 
 POST   /checkout/orders
 GET    /orders/:publicCode
+GET    /me/orders
+GET    /me/pickups/:orderCode
+GET    /me/profile
+PUT    /me/profile
+PUT    /me/preferences
 POST   /orders/:id/payment-intents/pix
 POST   /orders/:id/payment-intents/solana
 POST   /orders/:id/refunds
+
+GET    /marketplace/campuses/:slug/campaigns
+GET    /public/campaigns/:slug
 
 POST   /webhooks/:provider
 POST   /payments/solana/reconcile
@@ -1052,6 +1139,7 @@ POST   /campaigns/:id/reports/preview
 POST   /campaigns/:id/reports/close
 POST   /reports/:id/anchor
 GET    /reports/:id/public
+POST   /reports/:id/verify
 ```
 
 ### 15.2 Eventos de domínio
@@ -1236,6 +1324,10 @@ O Decreto nº 7.962/2013 trata de informações claras, atendimento facilitado e
 - Link para explorer como detalhe avançado.
 - Checkout em poucos passos.
 - Acessibilidade e contraste adequados.
+- Marketplace local deve mostrar campanhas por campus e organização, sem navegação administrativa.
+- "Minha conta" deve permitir acompanhar pedidos, QR/PIN, dados mínimos, pagamentos, preferências, segurança e suporte.
+- O comprador não deve ver linguagem contábil interna como ledger, débito/crédito ou conciliação, salvo em comprovante simplificado.
+- Tema claro e tema noturno devem estar disponíveis como preferência visual, preservando contraste e legibilidade.
 
 ### 18.2 Experiência do operador
 
@@ -1245,6 +1337,18 @@ O Decreto nº 7.962/2013 trata de informações claras, atendimento facilitado e
 - Simulação de fechamento antes de encerrar.
 - Scanner com feedback tátil/visual e modo de fila.
 - Operação degradada para instabilidade de rede: leitura limitada e fila segura, sem confirmar duas vezes.
+- Área de usuários deve diferenciar administradores, tesoureiro, operadores e auditores.
+- Logs devem ser somente leitura e explicar correções por novos eventos, não por apagamento.
+- Tema claro/noturno deve cobrir dashboard, tabelas, scanner, relatório e modais sem esconder estados críticos.
+
+### 18.2.1 Separação de experiências
+
+- Gestão da organização, marketplace/comprador e auditoria pública são experiências distintas.
+- O protótipo pode alternar essas experiências em uma mesma página para validação.
+- O produto real deve separar rotas e permissões.
+- A visão de gestão pode ter sidebar operacional.
+- A visão do comprador deve ser simples, pública/mobile-first e sem navegação administrativa.
+- A visão pública/auditoria deve expor relatório, hashes e agregados sem PII.
 
 ### 18.3 Linguagem
 
@@ -1387,6 +1491,7 @@ Evitar usar “número de transações” como métrica de valor isolada.
 - problema delimitado;
 - cinco entrevistas ou evidências equivalentes;
 - protótipo navegável ou fluxo visual;
+- experiências separadas de Gestão e Marketplace/comprador no protótipo;
 - demonstração de campanha de camisetas;
 - pagamento Solana em Devnet ou simulação tecnicamente correta;
 - QR de retirada;
@@ -1396,7 +1501,10 @@ Evitar usar “número de transações” como métrica de valor isolada.
 ### Fase H1 — MVP de 4–6 semanas
 
 - organização, membros e RBAC;
+- convites, papéis e logs de atividade;
 - campanha, aprovação e catálogo;
+- marketplace local por campus;
+- conta do comprador e pedidos;
 - pedidos;
 - rail onchain em Devnet;
 - ledger;
@@ -1704,6 +1812,12 @@ Evitar usar “número de transações” como métrica de valor isolada.
 **Decisão:** manter uma primeira versão visual em `app/`, sem backend, para alinhar experiência e narrativa.  
 **Motivo:** o hackathon avalia vídeo, clareza, problema e solução; validar o fluxo visual reduz risco antes de implementar integrações.  
 **Consequência:** dados mockados não devem ser confundidos com implementação funcional; o próximo passo é migrar a experiência para Next.js.
+
+### ADR-010 — Experiências separadas para gestão e comprador
+
+**Decisão:** representar no front três experiências: Gestão da organização, Marketplace/Minha conta do comprador e Auditoria pública.
+**Motivo:** organizadores precisam de uma ferramenta operacional densa, enquanto compradores precisam de checkout e acompanhamento simples sem navegação administrativa.
+**Consequência:** o protótipo pode usar um switch visual para validação, mas a versão real deve separar rotas, permissões, dados e linguagem por público.
 
 ---
 

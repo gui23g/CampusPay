@@ -1,44 +1,62 @@
 # CampusPay
 
-Versão visual de validação da CampusPay para o Hackathon Universitário da Superteam Brasil.
+MVP da CampusPay para o Hackathon Universitário da Superteam Brasil.
 
-A aplicação atual é um front-end estático de alta fidelidade, sem backend funcionando, criado para validar como o produto deve se comportar na versão final do MVP:
+A versão principal agora está em `web/`: uma aplicação Next.js/TypeScript com rotas reais, dados mockados por padrão, modo claro/noturno e pontos de integração para Supabase, Supabase Storage, Pix e Solana Devnet.
 
 `criar campanha → aprovar → vender → reconciliar pagamento → produzir → retirar com QR → fechar relatório → verificar hash`
 
-Abra `app/index.html` no navegador para visualizar.
-
-## Como rodar agora
-
-Esta primeira versão não precisa instalar dependências nem iniciar servidor.
-
-1. Abra o arquivo `app/index.html` diretamente no navegador.
-2. Alterne entre os acessos de Gestão e Marketplace no topo da barra lateral.
-3. Na Gestão, navegue por campanha, pedidos, produção, retirada, financeiro, usuários, logs e fechamento.
-4. No Marketplace, explore campanhas, abra o QR de retirada e use Minha conta para acompanhar pedidos, pagamentos, preferências e segurança.
-5. Na tela de Fechamento, use `Alterar JSON` para ver a verificação do hash falhar.
-
-No Windows, você também pode abrir pelo Explorer:
-
-```text
-C:\Users\Inteli\Documents\Hackathon-Coreia\app\index.html
-```
-
-Ou, pelo terminal dentro da raiz do repositório:
+## Como rodar o MVP
 
 ```powershell
-start .\app\index.html
+cd web
+copy .env.example .env.local
+npm install
+npm run dev
 ```
+
+Depois acesse:
+
+- `http://localhost:3000/app` para a área de gestão.
+- `http://localhost:3000/campus/inteli-sp` para o marketplace local.
+- `http://localhost:3000/c/camisa-atletica-2026` para o checkout público.
+- `http://localhost:3000/me` para a conta do comprador.
+- `http://localhost:3000/reports/rel-camiseta-2026` para o relatório público.
+
+Fluxo público validado: o marketplace em `/campus/:slug` lista campanhas publicadas por API, o botão de compra abre `/c/:campaignSlug`, e o checkout cria pedido em `/api/orders`.
+
+## Configuração rápida
+
+Por padrão, `NEXT_PUBLIC_ENABLE_MOCKS=true` permite rodar sem backend. Para ligar integrações reais:
+
+1. Crie um projeto Supabase.
+2. Rode `supabase/schema.sql` no SQL Editor.
+3. Preencha `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` e, no servidor, `SUPABASE_SERVICE_ROLE_KEY`.
+4. Confirme os buckets `product-images` e `documents`.
+5. Configure uma wallet de tesouraria na Solana Devnet e preencha `NEXT_PUBLIC_SOLANA_TREASURY_ADDRESS`.
+6. Troque `NEXT_PUBLIC_ENABLE_MOCKS=false` quando quiser testar com serviços reais.
+
+O passo a passo completo está em `docs/setup.md`.
+
+## Usuários e CRUD
+
+Usuários reais são criados em `/login` via Supabase Auth. Depois:
+
+- comprador completa perfil em `/me`, compra em `/c/camisa-atletica-2026`, acompanha pedidos em `/me/orders` e QR em `/me/pickups/:orderCode`;
+- dono cria organização em `/app/users`, cria convites, cria campanha/produto em `/app/campaigns/new`, publica status, opera pedidos, pagamentos, retirada e relatório nas rotas `/app/*`.
+
+O contrato completo está em `docs/crud-flows.md`.
 
 ## Estado atual
 
-- Front-end estático de alta fidelidade.
-- Dados mockados.
-- Sem backend, Supabase, Pix real ou Solana real ainda.
-- Objetivo: validar a experiência final do MVP e apoiar o pitch do hackathon.
+- `web/`: MVP final em Next.js, pronto para configuração de envs.
+- `supabase/schema.sql`: schema inicial, buckets e políticas base.
+- `docs/`: documentação de negócio, produto, arquitetura, setup e roadmap.
+- `.context/`: contexto mestre usado por pessoas e agentes de desenvolvimento.
 
 ## Estrutura
 
-- `app/`: protótipo front-end estático.
+- `web/`: aplicação final do MVP.
+- `supabase/`: schema SQL inicial.
 - `docs/`: documentação de negócio, produto, arquitetura e roadmap.
 - `.context/`: contexto mestre usado por pessoas e agentes de desenvolvimento.

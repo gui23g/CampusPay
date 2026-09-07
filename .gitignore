@@ -28,6 +28,10 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Generated local agent hints
+AGENTS.md
+CLAUDE.md
+
 # Temporary files
 *.tmp
 *.temp

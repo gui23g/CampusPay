@@ -36,6 +36,16 @@ O piloto ideal tem:
 
 Uma organização abre uma campanha, vende, recebe, produz, entrega e fecha suas contas sem reconstruir o histórico em cinco ferramentas diferentes.
 
+## Superfícies do produto
+
+A versão atual em `web/` separa o produto em três experiências:
+
+- **Gestão da organização:** ambiente logado para administradores, tesoureiros, operadores e auditores acompanharem campanhas, pedidos, estoque, financeiro, usuários, logs e fechamento.
+- **Marketplace do campus:** vitrine simples para estudantes encontrarem campanhas ativas do próprio campus e entrarem no checkout.
+- **Minha conta do comprador:** área para acompanhar pedidos, QR de retirada, dados do campus, métodos de pagamento, preferências, segurança e suporte.
+
+Essa vitrine não muda o posicionamento central: a CampusPay não quer vencer como marketplace genérico. O marketplace local serve como entrada natural para campanhas verificáveis; o diferencial continua sendo o ciclo completo até a prestação de contas.
+
 ## Diferencial
 
 A CampusPay não é apenas uma loja online e não é um banco. O diferencial está no ciclo completo:

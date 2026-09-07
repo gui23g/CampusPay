@@ -34,9 +34,12 @@ Solana é usada onde existe necessidade de verificação:
 A demo acompanha uma atlética vendendo camisetas:
 
 - campanha aprovada;
+- alternância entre visão da organização e visão do comprador;
+- marketplace local do campus como entrada da compra;
 - checkout com Pix simulado e Solana;
 - dashboard de conciliação;
 - estoque e retirada com QR;
+- conta do estudante com pedidos, pagamento, QR e preferências;
 - relatório final;
 - verificação do hash na Devnet.
 

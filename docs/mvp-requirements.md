@@ -13,6 +13,10 @@ Entregar um vertical slice demonstrável:
 - Criar organização estudantil.
 - Cadastrar membros com papéis.
 - Registrar período de gestão ou mandato.
+- Alternar claramente entre experiência de gestão e experiência do comprador.
+- Permitir modo claro e modo noturno como preferência de interface.
+- Gerenciar usuários, papéis, convites e permissões da organização.
+- Exibir logs de atividade da organização para auditoria operacional.
 - Aplicar RBAC no backend na implementação real.
 
 ### Campanha
@@ -26,6 +30,7 @@ Entregar um vertical slice demonstrável:
 
 ### Checkout
 
+- Marketplace local/campus para descoberta de campanhas ativas.
 - Página pública da campanha.
 - Seleção de variante.
 - Identificação mínima do comprador.
@@ -33,6 +38,15 @@ Entregar um vertical slice demonstrável:
 - Pedido com código público não sequencial.
 - Pix simulado no hackathon.
 - Solana Devnet com payment reference por pedido.
+
+### Conta do comprador
+
+- Área "Minha conta" separada da gestão da organização.
+- Listagem de pedidos do estudante.
+- Acompanhamento de status por etapa: pagamento, produção e retirada.
+- QR/PIN de retirada para pedidos liberados.
+- Dados pessoais mínimos e campus principal.
+- Preferências de pagamento, notificações, segurança e suporte.
 
 ### Pagamentos e reconciliação
 
@@ -83,19 +97,33 @@ Entregar um vertical slice demonstrável:
 - Conta bancária CampusPay.
 - Custódia de reais.
 - Pix real obrigatório.
-- Marketplace nacional.
+- Marketplace nacional ou multivendedor amplo.
 - Entrega residencial como padrão.
 - PII onchain.
 
-## Protótipo atual
+## Versão atual implementada
 
-A pasta `app/` contém uma versão visual estática de alta fidelidade, sem backend, cobrindo:
+A pasta `web/` contém a versão final do MVP em Next.js/TypeScript, com dados mockados por padrão e pontos de integração preparados para Supabase e Solana:
 
+- rotas reais para Gestão, Marketplace, Minha conta e Relatório público;
+- login/cadastro via Supabase Auth;
+- CRUD de comprador, organização, campanha, produto e pedido via route handlers;
+- soft delete/cancelamento para preservar histórico;
+- endpoints para confirmação de pagamento, retirada e fechamento;
+- modo claro/noturno com persistência local;
 - visão geral da campanha;
-- campanha versionada;
+- campanha versionada e produto com imagem;
+- upload de imagem com fallback local e envio para Supabase Storage quando configurado;
+- marketplace local por campus;
 - checkout público;
+- conta do comprador;
+- QR de retirada do estudante;
 - pedidos e reconciliação;
 - produção e estoque;
 - retirada;
 - financeiro e ledger;
+- usuários, convites e papéis;
+- logs de atividade;
 - relatório/verificador com simulação de adulteração do JSON.
+
+O repositório fica focado na aplicação final em `web/`.

@@ -24,9 +24,13 @@ Entregar um vertical slice de uma campanha estudantil:
 ## Escopo imediato
 
 - Organização, membros, papéis e mandato.
+- Alternância de experiência entre Gestão da organização e Marketplace/comprador.
+- Modo claro e modo noturno como preferência de interface.
 - Campanha versionada com aprovação.
 - Produto e variantes.
 - Imagens de produto em storage.
+- Marketplace local por campus para descoberta de campanhas ativas.
+- Conta do comprador com pedidos, retirada, dados, pagamentos, preferências e suporte.
 - Pedido e checkout.
 - Solana payment request com referência por pedido.
 - Pix simulado ou PSP real atrás de adapter.
@@ -34,6 +38,7 @@ Entregar um vertical slice de uma campanha estudantil:
 - Despesa e documento.
 - Lote de produção e estoque.
 - Retirada com QR single-use.
+- Gestão de usuários, convites, papéis e logs de atividade.
 - Relatório canônico, hash e ancoragem em Devnet.
 
 ## Decisões técnicas aprovadas após alinhamento
@@ -48,7 +53,7 @@ Para acelerar o MVP funcional, a stack alvo passa a ser:
 - Next.js Server Actions ou Route Handlers para regras sensíveis.
 - Solana Devnet para payment references e ancoragem de hash.
 
-O protótipo inicial em `app/` é propositalmente estático e sem backend. Ele serve para visualizar o fluxo, alinhar UX e apoiar o vídeo do hackathon. A implementação real deve migrar essa experiência para Next.js sem perder o fluxo demonstrado.
+A superfície principal é `web/`, em Next.js, com jornadas separadas em rotas reais.
 
 Buckets recomendados:
 
@@ -56,6 +61,49 @@ Buckets recomendados:
 - `documents`: orçamentos, recibos e comprovantes privados, servidos por URL assinada.
 
 O cliente não deve escrever diretamente em tabelas financeiras ou de auditoria. Operações como confirmação de pagamento, lançamento de ledger, fechamento de relatório, ancoragem onchain e confirmação de retirada passam pelo servidor.
+
+## Estado atual do front-end
+
+O MVP principal está em `web/`, usando Next.js/TypeScript. Ele cobre:
+
+- rotas reais separadas para Gestão, Marketplace, Minha conta e Relatório público;
+- visão geral da campanha para a organização;
+- campanha versionada, produto, variantes e imagem;
+- upload de imagem com preview local e envio para Supabase Storage quando envs reais estiverem configuradas;
+- marketplace local do campus;
+- checkout público com Pix e Solana mockados;
+- conta do comprador com pedidos, QR de retirada, dados, pagamentos, preferências, segurança e suporte;
+- pedidos e reconciliação da organização;
+- produção e estoque;
+- scanner de retirada;
+- financeiro e ledger;
+- usuários, convites e papéis;
+- logs de atividade;
+- fechamento com JSON canônico e simulação de adulteração do hash.
+- seletor de tema Claro/Noturno com persistência local.
+
+Não recriar uma superfície estática paralela. Novas features devem entrar em `web/`.
+
+## CRUD real preparado
+
+O app já possui route handlers para CRUD final:
+
+- comprador: perfil, preferências, pedidos e cancelamento;
+- dono: organização, campanha, produto, conciliação manual, retirada e fechamento;
+- auditoria: eventos gravados em `audit_events`;
+- segurança: service role apenas no servidor e Bearer token vindo da sessão Supabase.
+
+Ver detalhes em `docs/crud-flows.md`.
+
+## Setup obrigatório
+
+- Rodar a aplicação em `web/`.
+- Copiar `web/.env.example` para `web/.env.local`.
+- Seguir `docs/setup.md` para Supabase, Storage, Pix e Solana.
+- Executar `supabase/schema.sql` no projeto Supabase antes de desligar mocks.
+- Manter `NEXT_PUBLIC_ENABLE_MOCKS=true` até Auth, RLS e webhooks estarem testados.
+
+O marketplace local existe para facilitar descoberta e compra no campus. Ele não muda o posicionamento do produto: CampusPay continua sendo infraestrutura de campanha e prestação verificável, não um marketplace nacional genérico.
 
 ## Contrato de trabalho por feature
 
@@ -105,15 +153,15 @@ afetados, testes executados, riscos remanescentes e impacto no relatório final.
 
 ## Ordem recomendada de implementação
 
-1. Schema, multi-tenancy, auth e RBAC.
-2. State machines de campanha, pedido e pagamento.
-3. Ledger e idempotência.
-4. Campaign/catalog/order UI.
-5. Adapter Solana + reconciliação.
-6. Adapter Pix.
-7. Produção/estoque.
-8. QR fulfillment.
-9. Relatório/hash/âncora.
+1. Preencher envs e executar schema Supabase.
+2. Validar Auth e CRUD pelos formulários existentes.
+3. Substituir cards/tabelas mockadas por queries reais.
+4. Formalizar state machines de campanha, pedido e pagamento.
+5. Refinar ledger transacional com idempotência forte.
+6. Adapter Solana + reconciliação real.
+7. Adapter Pix real.
+8. Produção/estoque persistidos.
+9. QR fulfillment com câmera.
 10. Observabilidade, segurança e E2E.
 
 ## Definition of Done resumida
