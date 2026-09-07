@@ -13,8 +13,10 @@ Abra `app/index.html` no navegador para visualizar.
 Esta primeira versão não precisa instalar dependências nem iniciar servidor.
 
 1. Abra o arquivo `app/index.html` diretamente no navegador.
-2. Navegue pelas áreas laterais: Visão geral, Campanha, Checkout, Pedidos, Produção, Retirada, Financeiro e Fechamento.
-3. Na tela de Fechamento, use `Alterar JSON` para ver a verificação do hash falhar.
+2. Alterne entre os acessos de Gestão e Marketplace no topo da barra lateral.
+3. Na Gestão, navegue por campanha, pedidos, produção, retirada, financeiro, usuários, logs e fechamento.
+4. No Marketplace, explore campanhas, abra o QR de retirada e use Minha conta para acompanhar pedidos, pagamentos, preferências e segurança.
+5. Na tela de Fechamento, use `Alterar JSON` para ver a verificação do hash falhar.
 
 No Windows, você também pode abrir pelo Explorer:
 
