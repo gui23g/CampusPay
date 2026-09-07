@@ -1,63 +1,63 @@
-# Visao de negocio
+# Visão de negócio
 
 ## Produto
 
-A CampusPay e uma infraestrutura de campanhas comerciais para organizacoes estudantis. Ela conecta aprovacao, pre-venda, pagamento, producao, estoque, retirada e prestacao de contas em um unico historico verificavel.
+A CampusPay é uma infraestrutura de campanhas comerciais para organizações estudantis. Ela conecta aprovação, pré-venda, pagamento, produção, estoque, retirada e prestação de contas em um único histórico verificável.
 
 ## Problema
 
-Campanhas de atleticas, centros academicos e diretorios costumam operar com Forms, Pix, planilhas, WhatsApp, contas pessoais e listas de retirada. O fluxo ate vende, mas o fechamento financeiro vira uma reconstrucao manual.
+Campanhas de atléticas, centros acadêmicos e diretórios costumam operar com Forms, Pix, planilhas, WhatsApp, contas pessoais e listas de retirada. O fluxo até vende, mas o fechamento financeiro vira uma reconstrução manual.
 
-A dor principal nao e criar um checkout. A dor e provar:
+A dor principal não é criar um checkout. A dor é provar:
 
 - quanto foi vendido;
 - quanto foi efetivamente recebido;
 - quais despesas foram aprovadas;
 - quais pedidos foram produzidos, retirados, cancelados ou reembolsados;
 - qual estoque sobrou;
-- qual saldo final ficou disponivel;
-- quem aprovou cada decisao;
-- o que a proxima gestao precisa receber.
+- qual saldo final ficou disponível;
+- quem aprovou cada decisão;
+- o que a próxima gestão precisa receber.
 
-## Publico inicial
+## Público inicial
 
-O primeiro segmento sao atleticas, centros academicos e diretorios que fazem pre-vendas de camisetas, moletons, kits, ingressos ou produtos de eventos.
+O primeiro segmento são atléticas, centros acadêmicos e diretórios que fazem pré-vendas de camisetas, moletons, kits, ingressos ou produtos de eventos.
 
 O piloto ideal tem:
 
 - 50 a 500 compradores potenciais;
 - pelo menos duas campanhas por ano;
-- uma pessoa responsavel por tesouraria;
-- producao por lote ou quantidade minima;
+- uma pessoa responsável por tesouraria;
+- produção por lote ou quantidade mínima;
 - retirada concentrada no campus;
-- dor real com conciliacao ou troca de gestao.
+- dor real com conciliação ou troca de gestão.
 
 ## Proposta de valor
 
-Uma organizacao abre uma campanha, vende, recebe, produz, entrega e fecha suas contas sem reconstruir o historico em cinco ferramentas diferentes.
+Uma organização abre uma campanha, vende, recebe, produz, entrega e fecha suas contas sem reconstruir o histórico em cinco ferramentas diferentes.
 
 ## Diferencial
 
-A CampusPay nao e apenas uma loja online e nao e um banco. O diferencial esta no ciclo completo:
+A CampusPay não é apenas uma loja online e não é um banco. O diferencial está no ciclo completo:
 
-- autorizacao antes da venda;
+- autorização antes da venda;
 - pagamento reconciliado por pedido;
 - ledger de campanha;
-- estoque e retirada auditaveis;
-- relatorio final reproduzivel;
+- estoque e retirada auditáveis;
+- relatório final reproduzível;
 - hash ancorado em Solana;
-- historico preservado para conselho, universidade e proxima gestao.
+- histórico preservado para conselho, universidade e próxima gestão.
 
 ## Modelo comercial futuro
 
-O modelo inicial recomendado e SaaS:
+O modelo inicial recomendado é SaaS:
 
 - plano gratuito para uma campanha ativa;
-- plano por organizacao com multiplas campanhas e gestores;
-- licenca institucional para universidades;
-- taxa de servico apenas se juridicamente adequada;
+- plano por organização com múltiplas campanhas e gestores;
+- licença institucional para universidades;
+- taxa de serviço apenas se juridicamente adequada;
 - entrega externa como custo separado;
-- patrocinio limitado de taxas onchain.
+- patrocínio limitado de taxas onchain.
 
-Nao basear o negocio em custodia de fundos, spread cambial, rendimento ou token proprio.
+Não basear o negócio em custódia de fundos, spread cambial, rendimento ou token próprio.
 

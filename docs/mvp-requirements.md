@@ -2,100 +2,100 @@
 
 ## Objetivo
 
-Entregar um vertical slice demonstravel:
+Entregar um vertical slice demonstrável:
 
-`criar campanha -> aprovar -> vender -> confirmar pagamento -> produzir -> retirar com QR -> fechar -> verificar relatorio`
+`criar campanha → aprovar → vender → confirmar pagamento → produzir → retirar com QR → fechar → verificar relatório`
 
 ## Escopo funcional
 
-### Organizacao e acesso
+### Organização e acesso
 
-- Criar organizacao estudantil.
-- Cadastrar membros com papeis.
-- Registrar periodo de gestao ou mandato.
-- Aplicar RBAC no backend na implementacao real.
+- Criar organização estudantil.
+- Cadastrar membros com papéis.
+- Registrar período de gestão ou mandato.
+- Aplicar RBAC no backend na implementação real.
 
 ### Campanha
 
-- Criar campanha com nome, objetivo, destinacao do saldo, periodo, meta minima e prazo estimado.
-- Cadastrar produto, variantes, preco e quantidade.
+- Criar campanha com nome, objetivo, destinação do saldo, período, meta mínima e prazo estimado.
+- Cadastrar produto, variantes, preço e quantidade.
 - Anexar imagem do produto.
-- Submeter campanha para aprovacao.
+- Submeter campanha para aprovação.
 - Aprovar, rejeitar ou solicitar ajuste.
-- Congelar versao aprovada antes da primeira venda.
+- Congelar versão aprovada antes da primeira venda.
 
 ### Checkout
 
-- Pagina publica da campanha.
-- Selecao de variante.
-- Identificacao minima do comprador.
+- Página pública da campanha.
+- Seleção de variante.
+- Identificação mínima do comprador.
 - Escolha de retirada no campus.
-- Pedido com codigo publico nao sequencial.
+- Pedido com código público não sequencial.
 - Pix simulado no hackathon.
 - Solana Devnet com payment reference por pedido.
 
-### Pagamentos e reconciliacao
+### Pagamentos e reconciliação
 
 - Pix e Solana convergem para o mesmo ledger.
 - Cada pagamento aponta para um pedido.
-- Webhooks e eventos onchain sao idempotentes na versao real.
-- Valor, moeda/mint, destinatario e referencia precisam ser validados.
-- Divergencias viram estados explicitos.
+- Webhooks e eventos onchain são idempotentes na versão real.
+- Valor, moeda/mint, destinatário e referência precisam ser validados.
+- Divergências viram estados explícitos.
 
 ### Ledger
 
 - Ledger de dupla entrada.
 - Receitas, despesas, taxas, reembolsos e ajustes.
 - Valores em inteiros.
-- Correcao por reversao, nunca exclusao de lancamento confirmado.
+- Correção por reversão, nunca exclusão de lançamento confirmado.
 
-### Producao e estoque
+### Produção e estoque
 
 - Consolidar demanda paga por variante.
-- Registrar lote de producao.
+- Registrar lote de produção.
 - Registrar entrada de estoque.
 - Reservar unidade para pedido.
-- Registrar movimentacoes auditaveis.
+- Registrar movimentações auditáveis.
 
 ### Retirada
 
 - Criar ponto e janela de retirada.
 - Gerar QR/PIN por pedido.
 - Validar QR em tela de scanner.
-- Confirmar retirada uma unica vez.
+- Confirmar retirada uma única vez.
 - Registrar operador, data e dispositivo.
 
-### Relatorio
+### Relatório
 
-- Gerar relatorio de fechamento com totais reproduziveis.
-- Remover PII do resumo publico.
-- Criar JSON canonico.
+- Gerar relatório de fechamento com totais reproduzíveis.
+- Remover PII do resumo público.
+- Criar JSON canônico.
 - Calcular SHA-256 server-side.
 - Ancorar hash na Solana Devnet.
-- Permitir verificacao independente.
+- Permitir verificação independente.
 
 ## Fora de escopo do MVP
 
-- Token proprio.
+- Token próprio.
 - NFT decorativo.
 - DAO artificial.
 - Escrow custodial.
-- Conta bancaria CampusPay.
-- Custodia de reais.
-- Pix real obrigatorio.
+- Conta bancária CampusPay.
+- Custódia de reais.
+- Pix real obrigatório.
 - Marketplace nacional.
-- Entrega residencial como padrao.
+- Entrega residencial como padrão.
 - PII onchain.
 
-## Prototipo atual
+## Protótipo atual
 
-A pasta `app/` contem uma versao visual estatica de alta fidelidade, sem backend, cobrindo:
+A pasta `app/` contém uma versão visual estática de alta fidelidade, sem backend, cobrindo:
 
-- visao geral da campanha;
+- visão geral da campanha;
 - campanha versionada;
-- checkout publico;
-- pedidos e reconciliacao;
-- producao e estoque;
+- checkout público;
+- pedidos e reconciliação;
+- produção e estoque;
 - retirada;
 - financeiro e ledger;
-- relatorio/verificador com simulacao de adulteracao do JSON.
+- relatório/verificador com simulação de adulteração do JSON.

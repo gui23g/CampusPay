@@ -76,9 +76,9 @@ if (tamperButton && reportJson) {
       verifyStatus.className = "status-pill warning";
       verifiedSymbol.textContent = "!";
       verifiedSymbol.classList.add("is-invalid");
-      verifierTitle.textContent = "Hash local nao bate com a ancora";
+      verifierTitle.textContent = "Hash local não bate com a âncora";
       verifierCopy.textContent =
-        "Um centavo alterado muda o hash. O relatorio nao corresponde ao fechamento publicado.";
+        "Um centavo alterado muda o hash. O relatório não corresponde ao fechamento publicado.";
       localHash.textContent = "42bc...e118";
       return;
     }
@@ -98,9 +98,9 @@ if (tamperButton && reportJson) {
     verifyStatus.className = "status-pill success";
     verifiedSymbol.textContent = "OK";
     verifiedSymbol.classList.remove("is-invalid");
-    verifierTitle.textContent = "Hash local bate com a ancora";
+    verifierTitle.textContent = "Hash local bate com a âncora";
     verifierCopy.textContent =
-      "O relatorio fechado pode ser recalculado e comparado com a transacao publicada, sem revelar compradores.";
+      "O relatório fechado pode ser recalculado e comparado com a transação publicada, sem revelar compradores.";
     localHash.textContent = "8f13...9ac2";
   });
 }

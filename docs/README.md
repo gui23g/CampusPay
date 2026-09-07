@@ -1,12 +1,12 @@
 # CampusPay Documentation
 
-Esta pasta consolida a documentacao do projeto para o hackathon e para a evolucao do MVP.
+Esta pasta consolida a documentação do projeto para o hackathon e para a evolução do MVP.
 
 ## Documentos
 
-- [Visao de negocio](./business.md)
+- [Visão de negócio](./business.md)
 - [Requisitos do MVP](./mvp-requirements.md)
-- [Arquitetura tecnica](./architecture.md)
+- [Arquitetura técnica](./architecture.md)
 - [Roteiro do pitch](./pitch.md)
-- [Roadmap de implementacao](./roadmap.md)
+- [Roadmap de implementação](./roadmap.md)
 

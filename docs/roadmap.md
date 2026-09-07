@@ -2,23 +2,23 @@
 
 ## H0 - Hackathon
 
-- Prototipo visual navegavel.
+- Protótipo visual navegável.
 - Roteiro de pitch.
-- Descricao de ate 300 palavras.
+- Descrição de até 300 palavras.
 - Demo de campanha de camisetas.
 - Pix simulado.
 - Solana Devnet simulada ou tecnicamente correta.
 - QR de retirada.
-- Relatorio final com hash.
+- Relatório final com hash.
 
 ## H1 - MVP funcional
 
-- Migrar prototipo para Next.js.
+- Migrar protótipo para Next.js.
 - Configurar Supabase Auth.
 - Criar schema inicial no Supabase Postgres.
 - Criar buckets de Storage.
 - Implementar upload de imagens de produto.
-- Implementar organizacao, membros e RBAC.
+- Implementar organização, membros e RBAC.
 - Implementar campanha versionada.
 - Implementar pedido e checkout.
 - Implementar ledger.
@@ -30,11 +30,11 @@
 
 - Integrar PSP Pix.
 - Implementar webhooks assinados.
-- Implementar jobs de reconciliacao.
+- Implementar jobs de reconciliação.
 - Adicionar documentos privados com signed URLs.
-- Implementar notificacoes.
+- Implementar notificações.
 - Testar multi-tenancy e RLS.
-- Implementar handover entre gestoes.
+- Implementar handover entre gestões.
 - Rodar campanha piloto com uma entidade.
 
 ## H3 - Produto institucional
@@ -43,7 +43,7 @@
 - Dashboard institucional.
 - Auditoria permissionada.
 - Tesouraria multisig.
-- Relatorios comparaveis.
+- Relatórios comparáveis.
 - Portal de fornecedor.
 - Mainnet controlada.
 

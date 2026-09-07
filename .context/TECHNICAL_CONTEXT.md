@@ -37,12 +37,12 @@ Não assumir que o protótipo atual já tem backend real. Ele representa a exper
 
 ```text
 Next.js App
-  - Dashboard da organizacao
-  - Criacao e aprovacao de campanha
-  - Checkout publico
+  - Dashboard da organização
+  - Criação e aprovação de campanha
+  - Checkout público
   - Upload de imagem de produto
   - Scanner de retirada
-  - Relatorio final
+  - Relatório final
   - Verificador de hash
 
 Next.js Server
@@ -64,7 +64,7 @@ Supabase
 
 Solana Devnet
   - payment reference por pedido
-  - anchor do hash do relatorio
+  - âncora do hash do relatório
 ```
 
 ## Supabase

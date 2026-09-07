@@ -1,30 +1,30 @@
-# Arquitetura tecnica
+# Arquitetura técnica
 
-## Decisao de stack
+## Decisão de stack
 
-Para o MVP funcional, a stack recomendada e:
+Para o MVP funcional, a stack recomendada é:
 
 - Next.js com TypeScript;
 - Supabase Auth;
 - Supabase Postgres;
 - Supabase Storage;
 - Supabase Row Level Security;
-- Server Actions ou Route Handlers para regras sensiveis;
+- Server Actions ou Route Handlers para regras sensíveis;
 - Solana Devnet;
 - Vercel ou deploy equivalente.
 
-O prototipo atual em `app/` e estatico para acelerar validacao visual.
+O protótipo atual em `app/` é estático para acelerar a validação visual.
 
 ## Arquitetura alvo
 
 ```text
 Next.js App
-  - Dashboard da organizacao
-  - Criacao e aprovacao de campanha
-  - Checkout publico
+  - Dashboard da organização
+  - Criação e aprovação de campanha
+  - Checkout público
   - Upload de imagem de produto
   - Scanner de retirada
-  - Relatorio final
+  - Relatório final
   - Verificador de hash
 
 Next.js Server
@@ -46,7 +46,7 @@ Supabase
 
 Solana Devnet
   - payment reference por pedido
-  - anchor do hash do relatorio
+  - âncora do hash do relatório
 ```
 
 ## Supabase
@@ -80,22 +80,22 @@ Supabase Postgres armazena as entidades operacionais:
 
 Buckets recomendados:
 
-- `product-images`: imagens publicas ou semi-publicas dos produtos da campanha.
-- `documents`: documentos privados, como orcamentos, recibos e comprovantes.
+- `product-images`: imagens públicas ou semipúblicas dos produtos da campanha.
+- `documents`: documentos privados, como orçamentos, recibos e comprovantes.
 
-Fotos de produto podem ser servidas publicamente quando a campanha estiver aberta. Documentos financeiros devem usar URLs assinadas com expiracao.
+Fotos de produto podem ser servidas publicamente quando a campanha estiver aberta. Documentos financeiros devem usar URLs assinadas com expiração.
 
 ### RLS
 
-As tabelas precisam considerar multi-tenancy por `organization_id`. IDs publicos nao concedem autorizacao.
+As tabelas precisam considerar multi-tenancy por `organization_id`. IDs públicos não concedem autorização.
 
-Regras minimas:
+Regras mínimas:
 
 - comprador acessa apenas seus pedidos;
-- membros acessam apenas organizacoes onde possuem papel ativo;
-- auditor acessa relatorios e documentos permitidos;
-- suporte da plataforma nao movimenta fundos;
-- operacoes financeiras sensiveis passam pelo servidor.
+- membros acessam apenas organizações onde possuem papel ativo;
+- auditor acessa relatórios e documentos permitidos;
+- suporte da plataforma não movimenta fundos;
+- operações financeiras sensíveis passam pelo servidor.
 
 ## Solana
 
@@ -103,21 +103,21 @@ Regras minimas:
 
 Usar Solana para duas provas claras:
 
-1. pagamento com reference unica por pedido;
-2. hash do relatorio final ancorado na Devnet.
+1. pagamento com reference única por pedido;
+2. hash do relatório final ancorado na Devnet.
 
-### Validacao de pagamento
+### Validação de pagamento
 
 O backend deve validar:
 
-- transacao confirmada;
+- transação confirmada;
 - recipient correto;
 - mint correto;
 - valor em base units;
 - reference do pedido;
-- ausencia de processamento anterior;
+- ausência de processamento anterior;
 - token account esperado;
-- nivel de confirmacao definido.
+- nível de confirmação definido.
 
 ### Onchain e offchain
 
@@ -125,9 +125,9 @@ Onchain:
 
 - IDs opacos;
 - wallet/tesouraria;
-- hashes de versao e relatorio;
-- totais agregados nao sensiveis;
-- assinatura/transacao de referencia.
+- hashes de versão e relatório;
+- totais agregados não sensíveis;
+- assinatura/transação de referência.
 
 Offchain:
 
@@ -136,18 +136,18 @@ Offchain:
 - pedidos;
 - itens individuais;
 - documentos;
-- dados bancarios;
+- dados bancários;
 - disputas;
-- logistica.
+- logística.
 
 ## Regras de engenharia
 
-- Valores monetarios em inteiros.
+- Valores monetários em inteiros.
 - Eventos financeiros idempotentes.
 - Ledger balanceado.
-- Reversao para correcao.
-- Audit event para acoes sensiveis.
-- Outbox para eventos criticos na versao backend.
-- Sem PII em blockchain, logs ou payload publico.
-- Separacao de Devnet e Mainnet por ambiente.
+- Reversão para correção.
+- Audit event para ações sensíveis.
+- Outbox para eventos críticos na versão backend.
+- Sem PII em blockchain, logs ou payload público.
+- Separação de Devnet e Mainnet por ambiente.
 
