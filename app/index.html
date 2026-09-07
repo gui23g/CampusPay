@@ -8,6 +8,12 @@
       name="description"
       content="Front-end de validação da CampusPay: campanhas estudantis com checkout, ledger, retirada e relatório verificável."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="stylesheet" href="./styles/main.css" />
   </head>
@@ -16,78 +22,139 @@
       <aside class="sidebar" aria-label="Navegação principal">
         <div class="brand-row">
           <div class="brand-mark" aria-hidden="true">
-            <span></span>
+            <span>CP</span>
           </div>
           <div>
             <strong>CampusPay</strong>
-            <small>Operação verificável</small>
+            <small>Campanhas universitárias</small>
           </div>
         </div>
 
-        <div class="org-switcher" aria-label="Organização selecionada">
+        <div class="access-switcher" role="group" aria-label="Alternar tipo de acesso">
+          <button class="is-active" type="button" data-access-mode="management">
+            Gestão
+          </button>
+          <button type="button" data-access-mode="marketplace">Marketplace</button>
+        </div>
+
+        <div class="org-switcher access-identity" data-access-context="management">
           <span class="avatar" aria-hidden="true">AE</span>
           <div>
             <strong>Atlética Exemplo</strong>
-            <small>Gestão 2026</small>
+            <small>Administradora</small>
+          </div>
+        </div>
+
+        <div class="org-switcher access-identity" data-access-context="marketplace" hidden>
+          <span class="avatar student-avatar" aria-hidden="true">MS</span>
+          <div>
+            <strong>Marina Souza</strong>
+            <small>Estudante</small>
           </div>
         </div>
 
         <nav class="nav-list" aria-label="Áreas do produto">
-          <button class="nav-item is-active" data-view="overview" type="button">
-            <span class="nav-icon" aria-hidden="true">⌂</span>
-            Visão geral
-          </button>
-          <button class="nav-item" data-view="campaign" type="button">
-            <span class="nav-icon" aria-hidden="true">□</span>
-            Campanha
-          </button>
-          <button class="nav-item" data-view="checkout" type="button">
-            <span class="nav-icon" aria-hidden="true">◇</span>
-            Checkout
-          </button>
-          <button class="nav-item" data-view="orders" type="button">
-            <span class="nav-icon" aria-hidden="true">≡</span>
-            Pedidos
-          </button>
-          <button class="nav-item" data-view="inventory" type="button">
-            <span class="nav-icon" aria-hidden="true">▦</span>
-            Produção
-          </button>
-          <button class="nav-item" data-view="pickup" type="button">
-            <span class="nav-icon" aria-hidden="true">⌗</span>
-            Retirada
-          </button>
-          <button class="nav-item" data-view="finance" type="button">
-            <span class="nav-icon" aria-hidden="true">$</span>
-            Financeiro
-          </button>
-          <button class="nav-item" data-view="report" type="button">
-            <span class="nav-icon" aria-hidden="true">✓</span>
-            Fechamento
-          </button>
+          <div class="nav-group" data-access-nav="management">
+            <span class="nav-section-title">Organização</span>
+            <button class="nav-item is-active" data-view="overview" type="button">
+              <span class="nav-icon" aria-hidden="true">⌂</span>
+              Visão geral
+            </button>
+            <button class="nav-item" data-view="campaign" type="button">
+              <span class="nav-icon" aria-hidden="true">□</span>
+              Campanha
+            </button>
+            <button class="nav-item" data-view="orders" type="button">
+              <span class="nav-icon" aria-hidden="true">≡</span>
+              Pedidos
+            </button>
+            <button class="nav-item" data-view="inventory" type="button">
+              <span class="nav-icon" aria-hidden="true">▦</span>
+              Produção
+            </button>
+            <button class="nav-item" data-view="pickup" type="button">
+              <span class="nav-icon" aria-hidden="true">⌗</span>
+              Retirada
+            </button>
+            <button class="nav-item" data-view="finance" type="button">
+              <span class="nav-icon" aria-hidden="true">$</span>
+              Financeiro
+            </button>
+            <span class="nav-section-title nav-section-spaced">Administração</span>
+            <button class="nav-item" data-view="users" type="button">
+              <span class="nav-icon" aria-hidden="true">♙</span>
+              Usuários
+            </button>
+            <button class="nav-item" data-view="logs" type="button">
+              <span class="nav-icon" aria-hidden="true">◷</span>
+              Logs
+            </button>
+            <button class="nav-item" data-view="report" type="button">
+              <span class="nav-icon" aria-hidden="true">✓</span>
+              Fechamento
+            </button>
+          </div>
+
+          <div class="nav-group" data-access-nav="marketplace" hidden>
+            <span class="nav-section-title">Minha conta</span>
+            <button class="nav-item" data-view="marketplace" type="button">
+              <span class="nav-icon" aria-hidden="true">◎</span>
+              Explorar
+            </button>
+            <button class="nav-item" data-view="student-pickup" type="button">
+              <span class="nav-icon" aria-hidden="true">⌖</span>
+              Retiradas
+            </button>
+            <button class="nav-item" data-view="profile" type="button">
+              <span class="nav-icon" aria-hidden="true">●</span>
+              Perfil
+            </button>
+          </div>
         </nav>
 
-        <div class="sidebar-footer">
-          <span class="label">Hackathon</span>
-          <strong>Track Vida universitária</strong>
-          <small>Problema real, fit Brasil e Solana sem enfeite.</small>
+        <div class="sidebar-footer" data-access-context="management">
+          <small>Campanha ativa</small>
+          <strong>Camiseta Atlética 2026</strong>
+          <span class="sidebar-status"><i></i> Pré-venda aberta</span>
+        </div>
+
+        <div class="sidebar-footer" data-access-context="marketplace" hidden>
+          <small>Campus selecionado</small>
+          <strong>Inteli — São Paulo</strong>
+          <button class="sidebar-link" type="button">Alterar campus</button>
         </div>
       </aside>
 
       <main class="workspace">
         <header class="topbar">
-          <div>
-            <span class="label">Campanha ativa</span>
-            <h1>Camiseta Atlética 2026</h1>
+          <div data-access-context="management">
+            <span class="topbar-context">Gestão da organização</span>
+            <h1>Atlética Exemplo</h1>
           </div>
-          <div class="topbar-actions">
+
+          <div data-access-context="marketplace" hidden>
+            <span class="topbar-context">CampusPay</span>
+            <h1>Marketplace universitário</h1>
+          </div>
+
+          <div class="topbar-actions" data-access-context="management">
             <div class="search-box" aria-label="Busca visual">
               <span aria-hidden="true">⌕</span>
-              <input value="CP-7F91" aria-label="Buscar pedido" readonly />
+              <input placeholder="Buscar pedido" aria-label="Buscar pedido" />
             </div>
             <button class="icon-button" type="button" aria-label="Notificações">!</button>
             <button class="primary-action" type="button" data-jump="report">
               Fechar campanha
+            </button>
+          </div>
+
+          <div class="topbar-actions" data-access-context="marketplace" hidden>
+            <div class="search-box marketplace-search" aria-label="Buscar campanhas">
+              <span aria-hidden="true">⌕</span>
+              <input placeholder="Buscar campanhas" aria-label="Buscar campanhas" />
+            </div>
+            <button class="secondary-action" type="button" data-jump="profile">
+              Minha conta
             </button>
           </div>
         </header>
@@ -95,13 +162,23 @@
         <section class="view is-visible" id="overview" aria-labelledby="overview-title">
           <div class="page-heading">
             <div>
-              <span class="label">Centro de comando</span>
-              <h2 id="overview-title">A campanha inteira em uma única fonte de verdade</h2>
+              <h2 id="overview-title">Visão geral</h2>
+              <p class="page-context">Camiseta Atlética 2026</p>
             </div>
             <div class="heading-actions">
               <span class="status-pill success">Pré-venda aberta</span>
               <span class="status-pill neutral">v1 aprovada</span>
             </div>
+          </div>
+
+          <div class="section-heading">
+            <h3>Etapas da campanha</h3>
+            <button
+              class="info-hint"
+              type="button"
+              title="As etapas avançam conforme vendas, produção e retiradas são confirmadas."
+              aria-label="Informações sobre as etapas da campanha"
+            >🛈</button>
           </div>
 
           <section class="stage-strip" aria-label="Estado da campanha">
@@ -159,8 +236,7 @@
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Ações de hoje</span>
-                  <h3>O que impede o fechamento limpo</h3>
+                  <h3>Ações pendentes</h3>
                 </div>
                 <span class="count-badge">4</span>
               </div>
@@ -195,8 +271,7 @@
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Resumo financeiro</span>
-                  <h3>Previsto versus realizado</h3>
+                  <h3>Resumo financeiro</h3>
                 </div>
                 <span class="status-pill success">ledger balanceado</span>
               </div>
@@ -227,8 +302,15 @@
 
           <section class="timeline-band">
             <div>
-              <span class="label">Histórico verificável</span>
-              <h3>Eventos que entram no relatório</h3>
+              <div class="section-title-row">
+                <h3>Histórico recente</h3>
+                <button
+                  class="info-hint info-hint-dark"
+                  type="button"
+                  title="Esses eventos serão incluídos no relatório de fechamento."
+                  aria-label="Informações sobre o histórico"
+                >🛈</button>
+              </div>
             </div>
             <div class="timeline">
               <div>
@@ -254,18 +336,25 @@
         <section class="view" id="campaign" aria-labelledby="campaign-title">
           <div class="page-heading">
             <div>
-              <span class="label">Campanha versionada</span>
-              <h2 id="campaign-title">Configuração aprovada antes da venda</h2>
+              <h2 id="campaign-title">Campanha</h2>
+              <p class="page-context">Camiseta Atlética 2026 · versão 1</p>
             </div>
-            <button class="secondary-action" type="button">Solicitar nova versão</button>
+            <div class="heading-actions">
+              <button
+                class="secondary-action"
+                type="button"
+                data-jump="checkout"
+                data-target-access="marketplace"
+              >Ver no marketplace</button>
+              <button class="secondary-action" type="button">Solicitar nova versão</button>
+            </div>
           </div>
 
           <div class="two-column balanced">
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Dados principais</span>
-                  <h3>Camiseta Atlética 2026</h3>
+                  <h3>Dados da campanha</h3>
                 </div>
                 <span class="status-pill success">aprovada</span>
               </div>
@@ -316,8 +405,7 @@
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Variantes</span>
-                  <h3>Preço e capacidade</h3>
+                  <h3>Variantes</h3>
                 </div>
               </div>
               <table class="data-table">
@@ -361,8 +449,15 @@
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Política</span>
-                  <h3>Aprovação e congelamento</h3>
+                  <div class="section-title-row">
+                    <h3>Aprovação</h3>
+                    <button
+                      class="info-hint"
+                      type="button"
+                      title="Alterações após a primeira venda criam uma nova versão da campanha."
+                      aria-label="Informações sobre a aprovação da campanha"
+                    >🛈</button>
+                  </div>
                 </div>
               </div>
               <div class="approval-chain">
@@ -399,13 +494,89 @@
           </div>
         </section>
 
+        <section class="view" id="marketplace" aria-labelledby="marketplace-title">
+          <div class="page-heading">
+            <div>
+              <h2 id="marketplace-title">Campanhas no seu campus</h2>
+              <p class="page-context">Inteli — São Paulo</p>
+            </div>
+            <span class="status-pill neutral">4 campanhas ativas</span>
+          </div>
+
+          <div class="marketplace-toolbar" aria-label="Filtros do marketplace">
+            <div class="segmented-control marketplace-filters">
+              <button class="is-selected" type="button">Todas</button>
+              <button type="button">Vestuário</button>
+              <button type="button">Eventos</button>
+              <button type="button">Kits</button>
+            </div>
+            <select aria-label="Ordenar campanhas">
+              <option>Mais recentes</option>
+              <option>Encerram primeiro</option>
+              <option>Menor preço</option>
+            </select>
+          </div>
+
+          <div class="campaign-grid">
+            <article class="campaign-card">
+              <div class="campaign-card-media">
+                <img
+                  src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=1100&q=82"
+                  alt="Pessoa usando camiseta branca"
+                />
+                <span class="status-pill success">Pré-venda</span>
+              </div>
+              <div class="campaign-card-body">
+                <span class="organization-name">Atlética Exemplo</span>
+                <h3>Camiseta Atlética 2026</h3>
+                <div class="campaign-card-meta">
+                  <span><small>A partir de</small> R$ 60,00</span>
+                  <span><small>Encerra em</small> 11 dias</span>
+                </div>
+                <div class="campaign-progress">
+                  <div><span>139 de 100 unidades</span><strong>139%</strong></div>
+                  <i><span style="width: 100%"></span></i>
+                </div>
+                <button class="primary-action full" type="button" data-jump="checkout">
+                  Ver campanha
+                </button>
+              </div>
+            </article>
+
+            <article class="campaign-card">
+              <div class="campaign-card-media">
+                <img
+                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=82"
+                  alt="Camisetas dobradas"
+                />
+                <span class="status-pill neutral">Novo</span>
+              </div>
+              <div class="campaign-card-body">
+                <span class="organization-name">Centro Acadêmico de Computação</span>
+                <h3>Kit de boas-vindas 2027</h3>
+                <div class="campaign-card-meta">
+                  <span><small>A partir de</small> R$ 45,00</span>
+                  <span><small>Encerra em</small> 18 dias</span>
+                </div>
+                <div class="campaign-progress">
+                  <div><span>42 de 80 unidades</span><strong>52%</strong></div>
+                  <i><span style="width: 52%"></span></i>
+                </div>
+                <button class="secondary-action full" type="button" disabled>
+                  Ver campanha em breve
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section class="view" id="checkout" aria-labelledby="checkout-title">
           <div class="page-heading">
             <div>
-              <span class="label">Página pública</span>
-              <h2 id="checkout-title">Comprar sem aprender blockchain</h2>
+              <h2 id="checkout-title">Camiseta Atlética 2026</h2>
+              <p class="page-context">Atlética Exemplo · retirada no campus</p>
             </div>
-            <span class="status-pill neutral">preview comprador</span>
+            <span class="status-pill success">Pré-venda aberta</span>
           </div>
 
           <div class="checkout-shell">
@@ -476,18 +647,656 @@
                   </div>
                 </div>
               </div>
-              <button class="primary-action full" type="button" data-jump="orders">
+              <button
+                class="primary-action full"
+                type="button"
+                data-jump="profile"
+                data-profile-tab="orders"
+              >
                 Ver pedido confirmado
               </button>
             </aside>
           </div>
         </section>
 
+        <section class="view" id="student-pickup" aria-labelledby="student-pickup-title">
+          <div class="page-heading">
+            <div>
+              <h2 id="student-pickup-title">Retiradas</h2>
+              <p class="page-context">1 pedido disponível</p>
+            </div>
+          </div>
+
+          <div class="student-pickup-layout">
+            <section class="pickup-pass surface">
+              <div class="pickup-pass-header">
+                <div>
+                  <span class="organization-name">Pedido CP-4Q22</span>
+                  <h3>Camiseta Atlética 2026</h3>
+                </div>
+                <span class="status-pill success">Liberado</span>
+              </div>
+              <div class="pickup-code">
+                <div class="qr-pattern large" aria-hidden="true"></div>
+                <div>
+                  <small>Código alternativo</small>
+                  <strong>4Q22-9816</strong>
+                </div>
+              </div>
+              <dl class="pickup-details">
+                <div><dt>Item</dt><dd>Camiseta G</dd></div>
+                <div><dt>Data</dt><dd>28 de setembro</dd></div>
+                <div><dt>Horário</dt><dd>18h–20h</dd></div>
+                <div><dt>Local</dt><dd>Quadra central</dd></div>
+              </dl>
+            </section>
+
+            <aside class="surface pickup-guide">
+              <div class="section-title-row">
+                <h3>Como retirar</h3>
+                <span class="info-symbol" aria-hidden="true">🛈</span>
+              </div>
+              <ol>
+                <li>Apresente este QR ao operador.</li>
+                <li>Confira o tamanho antes da confirmação.</li>
+                <li>O código deixa de funcionar após a retirada.</li>
+              </ol>
+              <button class="secondary-action full" type="button">Adicionar ao calendário</button>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="profile" aria-labelledby="profile-title">
+          <div class="page-heading">
+            <div>
+              <h2 id="profile-title">Minha conta</h2>
+              <p class="page-context">Compras e configurações do Marketplace</p>
+            </div>
+            <button class="secondary-action" type="button" data-profile-tab="identity">
+              Editar dados
+            </button>
+          </div>
+
+          <div class="account-layout">
+            <aside class="surface account-sidebar">
+              <div class="profile-identity">
+                <span class="profile-avatar" aria-hidden="true">MS</span>
+                <div>
+                  <h3>Marina Souza</h3>
+                  <p>marina.souza@aluno.inteli.edu.br</p>
+                  <span class="table-pill success">Conta verificada</span>
+                </div>
+              </div>
+
+              <nav class="account-tabs" aria-label="Seções da conta">
+                <button
+                  class="account-tab is-active"
+                  type="button"
+                  data-profile-tab="overview"
+                  aria-selected="true"
+                >
+                  <span aria-hidden="true">⌂</span>
+                  Visão geral
+                </button>
+                <button
+                  class="account-tab"
+                  type="button"
+                  data-profile-tab="orders"
+                  aria-selected="false"
+                >
+                  <span aria-hidden="true">▤</span>
+                  Meus pedidos
+                  <small>2</small>
+                </button>
+                <button
+                  class="account-tab"
+                  type="button"
+                  data-profile-tab="identity"
+                  aria-selected="false"
+                >
+                  <span aria-hidden="true">●</span>
+                  Dados e campus
+                </button>
+                <button
+                  class="account-tab"
+                  type="button"
+                  data-profile-tab="payments"
+                  aria-selected="false"
+                >
+                  <span aria-hidden="true">$</span>
+                  Pagamentos
+                </button>
+                <button
+                  class="account-tab"
+                  type="button"
+                  data-profile-tab="preferences"
+                  aria-selected="false"
+                >
+                  <span aria-hidden="true">◉</span>
+                  Preferências
+                </button>
+                <button
+                  class="account-tab"
+                  type="button"
+                  data-profile-tab="security"
+                  aria-selected="false"
+                >
+                  <span aria-hidden="true">◇</span>
+                  Segurança e ajuda
+                </button>
+              </nav>
+            </aside>
+
+            <div class="account-content">
+              <section
+                class="account-panel is-active"
+                id="profile-overview"
+                data-profile-panel="overview"
+                aria-labelledby="profile-overview-title"
+              >
+                <div class="account-panel-heading">
+                  <div>
+                    <span class="label">Resumo</span>
+                    <h3 id="profile-overview-title">Olá, Marina</h3>
+                  </div>
+                  <button class="text-action" type="button" data-jump="marketplace">
+                    Explorar campanhas
+                  </button>
+                </div>
+
+                <section class="surface profile-stats account-stats" aria-label="Resumo da conta">
+                  <div>
+                    <small>Pedidos realizados</small>
+                    <strong>6</strong>
+                  </div>
+                  <div>
+                    <small>Pedidos ativos</small>
+                    <strong>2</strong>
+                  </div>
+                  <div>
+                    <small>Prontos para retirada</small>
+                    <strong>1</strong>
+                  </div>
+                  <div>
+                    <small>Campanhas salvas</small>
+                    <strong>3</strong>
+                  </div>
+                </section>
+
+                <div class="account-overview-grid">
+                  <section class="surface account-section">
+                    <div class="surface-header">
+                      <h3>Pedidos recentes</h3>
+                      <button class="text-action" type="button" data-profile-tab="orders">
+                        Ver todos
+                      </button>
+                    </div>
+                    <div class="profile-order-list">
+                      <article>
+                        <div>
+                          <strong>Camiseta Atlética 2026</strong>
+                          <small>CP-4Q22 · Camiseta G</small>
+                        </div>
+                        <span class="table-pill success">Retirada disponível</span>
+                      </article>
+                      <article>
+                        <div>
+                          <strong>Camiseta Atlética 2026</strong>
+                          <small>CP-7F91 · Camiseta M</small>
+                        </div>
+                        <span class="table-pill neutral">Em produção</span>
+                      </article>
+                      <article>
+                        <div>
+                          <strong>Kit Integração 2026</strong>
+                          <small>CP-1D38 · Kit completo</small>
+                        </div>
+                        <span class="table-pill muted">Retirado</span>
+                      </article>
+                    </div>
+                  </section>
+
+                  <aside class="surface account-section account-checklist">
+                    <div class="surface-header">
+                      <h3>Conta pronta para comprar</h3>
+                      <span class="table-pill success">Completa</span>
+                    </div>
+                    <div class="account-check-row">
+                      <span class="check-symbol" aria-hidden="true">✓</span>
+                      <div><span>E-mail estudantil</span><small>Verificado</small></div>
+                    </div>
+                    <div class="account-check-row">
+                      <span class="check-symbol" aria-hidden="true">✓</span>
+                      <div><span>Campus principal</span><small>Inteli — São Paulo</small></div>
+                    </div>
+                    <div class="account-check-row">
+                      <span class="check-symbol" aria-hidden="true">✓</span>
+                      <div><span>Pagamento preferido</span><small>Pix</small></div>
+                    </div>
+                    <button class="secondary-action full" type="button" data-profile-tab="identity">
+                      Revisar dados
+                    </button>
+                  </aside>
+                </div>
+
+                <section class="surface account-section saved-campaigns">
+                  <div class="surface-header">
+                    <div>
+                      <span class="label">Salvos</span>
+                      <h3>Campanhas para acompanhar</h3>
+                    </div>
+                    <button class="text-action" type="button" data-jump="marketplace">
+                      Ver marketplace
+                    </button>
+                  </div>
+                  <div class="saved-campaign-row">
+                    <div class="saved-campaign-mark" aria-hidden="true">EC</div>
+                    <div>
+                      <span>Moletom Engenharia 2026</span>
+                      <small>Encerra em 8 dias · 71% da meta</small>
+                    </div>
+                    <button class="secondary-action compact" type="button">Ver campanha</button>
+                  </div>
+                </section>
+              </section>
+
+              <section
+                class="account-panel"
+                id="profile-orders"
+                data-profile-panel="orders"
+                aria-labelledby="profile-orders-title"
+                hidden
+              >
+                <div class="account-panel-heading">
+                  <div>
+                    <span class="label">Compras</span>
+                    <h3 id="profile-orders-title">Meus pedidos</h3>
+                    <p>Consulte o andamento, a retirada e o suporte de cada compra.</p>
+                  </div>
+                  <label class="account-filter">
+                    Mostrar
+                    <select aria-label="Filtrar pedidos por status">
+                      <option>Todos os pedidos</option>
+                      <option>Em andamento</option>
+                      <option>Prontos para retirada</option>
+                      <option>Concluídos</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="student-order-list">
+                  <article class="student-order surface">
+                    <div class="student-order-main">
+                      <span class="organization-name">Atlética Exemplo</span>
+                      <div class="section-title-row order-title-row">
+                        <h3>Camiseta Atlética 2026</h3>
+                        <span class="status-pill neutral">Em produção</span>
+                      </div>
+                      <p>Pedido CP-7F91 · Camiseta M · R$ 60,00</p>
+                      <div class="order-steps" aria-label="Andamento do pedido">
+                        <span class="is-complete">Pagamento</span>
+                        <span class="is-current">Produção</span>
+                        <span>Retirada</span>
+                      </div>
+                    </div>
+                    <div class="student-order-actions">
+                      <small>Previsão de retirada</small>
+                      <strong>28 de setembro</strong>
+                      <button class="secondary-action" type="button">Ver detalhes</button>
+                      <button class="text-action" type="button">Falar com a organização</button>
+                    </div>
+                  </article>
+
+                  <article class="student-order surface">
+                    <div class="student-order-main">
+                      <span class="organization-name">Atlética Exemplo</span>
+                      <div class="section-title-row order-title-row">
+                        <h3>Camiseta Atlética 2026</h3>
+                        <span class="status-pill success">Pronto para retirar</span>
+                      </div>
+                      <p>Pedido CP-4Q22 · Camiseta G · R$ 60,00</p>
+                      <div class="order-steps" aria-label="Andamento do pedido">
+                        <span class="is-complete">Pagamento</span>
+                        <span class="is-complete">Produção</span>
+                        <span class="is-current">Retirada</span>
+                      </div>
+                    </div>
+                    <div class="student-order-actions">
+                      <small>Janela disponível</small>
+                      <strong>Hoje, 18h–20h</strong>
+                      <button class="primary-action" type="button" data-jump="student-pickup">
+                        Mostrar QR
+                      </button>
+                      <button class="text-action" type="button">Ver comprovante</button>
+                    </div>
+                  </article>
+
+                  <article class="student-order surface completed-order">
+                    <div class="student-order-main">
+                      <span class="organization-name">Centro Acadêmico</span>
+                      <div class="section-title-row order-title-row">
+                        <h3>Kit Integração 2026</h3>
+                        <span class="status-pill muted">Retirado</span>
+                      </div>
+                      <p>Pedido CP-1D38 · Kit completo · R$ 85,00</p>
+                    </div>
+                    <div class="student-order-actions">
+                      <small>Retirado em</small>
+                      <strong>14 de agosto</strong>
+                      <button class="secondary-action" type="button">Avaliar compra</button>
+                      <button class="text-action" type="button">Ver comprovante</button>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <section
+                class="account-panel"
+                id="profile-identity"
+                data-profile-panel="identity"
+                aria-labelledby="profile-identity-title"
+                hidden
+              >
+                <div class="account-panel-heading">
+                  <div>
+                    <span class="label">Cadastro</span>
+                    <h3 id="profile-identity-title">Dados e campus</h3>
+                    <p>Informações usadas no checkout e na retirada.</p>
+                  </div>
+                  <button class="primary-action" type="button">Salvar alterações</button>
+                </div>
+
+                <section class="surface account-section">
+                  <div class="surface-header">
+                    <h3>Dados pessoais</h3>
+                    <span class="table-pill success">E-mail verificado</span>
+                  </div>
+                  <div class="profile-fields">
+                    <label>
+                      Nome completo
+                      <input value="Marina Souza" />
+                    </label>
+                    <label>
+                      Telefone
+                      <input value="(11) 98888-4102" />
+                    </label>
+                    <label>
+                      E-mail estudantil
+                      <input value="marina.souza@aluno.inteli.edu.br" readonly />
+                    </label>
+                    <label>
+                      Matrícula
+                      <input value="2026••••42" readonly />
+                    </label>
+                  </div>
+                </section>
+
+                <div class="account-settings-grid">
+                  <section class="surface account-section">
+                    <div class="surface-header">
+                      <h3>Campus e retirada</h3>
+                    </div>
+                    <div class="setting-list">
+                      <div class="setting-row">
+                        <div>
+                          <span>Campus principal</span>
+                          <small>Inteli — São Paulo</small>
+                        </div>
+                        <button class="text-action" type="button">Alterar</button>
+                      </div>
+                      <div class="setting-row">
+                        <div>
+                          <span>Ponto de retirada preferido</span>
+                          <small>Quadra central</small>
+                        </div>
+                        <button class="text-action" type="button">Editar</button>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="surface account-section">
+                    <div class="surface-header">
+                      <h3>Endereço</h3>
+                    </div>
+                    <div class="empty-setting">
+                      <span class="empty-setting-icon" aria-hidden="true">⌂</span>
+                      <div>
+                        <span>Nenhum endereço cadastrado</span>
+                        <small>Será usado apenas quando uma campanha oferecer entrega.</small>
+                      </div>
+                    </div>
+                    <button class="secondary-action full" type="button">Adicionar endereço</button>
+                  </section>
+                </div>
+              </section>
+
+              <section
+                class="account-panel"
+                id="profile-payments"
+                data-profile-panel="payments"
+                aria-labelledby="profile-payments-title"
+                hidden
+              >
+                <div class="account-panel-heading">
+                  <div>
+                    <span class="label">Checkout</span>
+                    <h3 id="profile-payments-title">Pagamentos</h3>
+                    <p>Gerencie as opções exibidas ao concluir uma compra.</p>
+                  </div>
+                </div>
+
+                <section class="surface account-section">
+                  <div class="surface-header">
+                    <h3>Métodos disponíveis</h3>
+                    <span class="info-symbol" aria-label="Informação">🛈</span>
+                  </div>
+                  <div class="setting-list payment-method-list">
+                    <div class="setting-row payment-method is-primary">
+                      <span class="payment-mark pix-mark" aria-hidden="true">PX</span>
+                      <div>
+                        <span>Pix</span>
+                        <small>Método preferido · confirmação imediata</small>
+                      </div>
+                      <span class="table-pill success">Preferido</span>
+                    </div>
+                    <div class="setting-row payment-method">
+                      <span class="payment-mark solana-mark" aria-hidden="true">SOL</span>
+                      <div>
+                        <span>Carteira Solana</span>
+                        <small>7xK4••••••A2V · rede Devnet</small>
+                      </div>
+                      <button class="text-action" type="button">Gerenciar</button>
+                    </div>
+                  </div>
+                  <p class="account-note">
+                    O valor e o método usado ficam registrados no comprovante de cada pedido.
+                  </p>
+                </section>
+
+                <section class="surface account-section">
+                  <div class="surface-header">
+                    <h3>Preferência de pagamento</h3>
+                  </div>
+                  <label>
+                    Método padrão no checkout
+                    <select>
+                      <option>Pix</option>
+                      <option>Carteira Solana</option>
+                    </select>
+                  </label>
+                </section>
+              </section>
+
+              <section
+                class="account-panel"
+                id="profile-preferences"
+                data-profile-panel="preferences"
+                aria-labelledby="profile-preferences-title"
+                hidden
+              >
+                <div class="account-panel-heading">
+                  <div>
+                    <span class="label">Comunicações</span>
+                    <h3 id="profile-preferences-title">Preferências</h3>
+                    <p>Escolha quais avisos quer receber.</p>
+                  </div>
+                  <button class="primary-action" type="button">Salvar preferências</button>
+                </div>
+
+                <section class="surface account-section">
+                  <div class="surface-header">
+                    <h3>Pedidos e retiradas</h3>
+                  </div>
+                  <div class="preference-list">
+                    <label class="preference-row">
+                      <div>
+                        <span>Atualizações do pedido</span>
+                        <small>Pagamento, produção e mudança de status.</small>
+                      </div>
+                      <input type="checkbox" checked />
+                    </label>
+                    <label class="preference-row">
+                      <div>
+                        <span>Lembretes de retirada</span>
+                        <small>Alertas antes do início e do fim da janela escolhida.</small>
+                      </div>
+                      <input type="checkbox" checked />
+                    </label>
+                  </div>
+                </section>
+
+                <section class="surface account-section">
+                  <div class="surface-header">
+                    <h3>Descobertas no marketplace</h3>
+                  </div>
+                  <div class="preference-list">
+                    <label class="preference-row">
+                      <div>
+                        <span>Novas campanhas no campus</span>
+                        <small>Avisos de organizações estudantis que você acompanha.</small>
+                      </div>
+                      <input type="checkbox" checked />
+                    </label>
+                    <label class="preference-row">
+                      <div>
+                        <span>Recomendações personalizadas</span>
+                        <small>Sugestões baseadas em campanhas salvas e compras.</small>
+                      </div>
+                      <input type="checkbox" />
+                    </label>
+                  </div>
+                </section>
+              </section>
+
+              <section
+                class="account-panel"
+                id="profile-security"
+                data-profile-panel="security"
+                aria-labelledby="profile-security-title"
+                hidden
+              >
+                <div class="account-panel-heading">
+                  <div>
+                    <span class="label">Proteção da conta</span>
+                    <h3 id="profile-security-title">Segurança e ajuda</h3>
+                    <p>Controle os acessos e encontre suporte para suas compras.</p>
+                  </div>
+                </div>
+
+                <div class="account-settings-grid">
+                  <section class="surface account-section">
+                    <div class="surface-header">
+                      <h3>Segurança</h3>
+                    </div>
+                    <div class="setting-list">
+                      <div class="setting-row">
+                        <div>
+                          <span>Senha</span>
+                          <small>Atualizada há 18 dias</small>
+                        </div>
+                        <button class="text-action" type="button">Alterar</button>
+                      </div>
+                      <div class="setting-row">
+                        <div>
+                          <span>Verificação em duas etapas</span>
+                          <small>Adicione uma camada extra de proteção.</small>
+                        </div>
+                        <button class="text-action" type="button">Ativar</button>
+                      </div>
+                      <div class="setting-row">
+                        <div>
+                          <span>Dispositivos conectados</span>
+                          <small>2 sessões ativas</small>
+                        </div>
+                        <button class="text-action" type="button">Revisar</button>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="surface account-section">
+                    <div class="surface-header">
+                      <h3>Privacidade</h3>
+                    </div>
+                    <div class="setting-list">
+                      <div class="setting-row">
+                        <div>
+                          <span>Baixar meus dados</span>
+                          <small>Receba uma cópia das informações da sua conta.</small>
+                        </div>
+                        <button class="text-action" type="button">Solicitar</button>
+                      </div>
+                      <div class="setting-row">
+                        <div>
+                          <span>Excluir conta</span>
+                          <small>Pedidos em andamento precisam ser concluídos primeiro.</small>
+                        </div>
+                        <button class="text-action danger-text" type="button">Entender</button>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+                <section class="surface account-section support-section">
+                  <div class="surface-header">
+                    <div>
+                      <span class="label">Central de ajuda</span>
+                      <h3>Como podemos ajudar?</h3>
+                    </div>
+                  </div>
+                  <div class="support-grid">
+                    <button type="button">
+                      <span aria-hidden="true">▤</span>
+                      <div>
+                        <span>Problema com um pedido</span>
+                        <small>Fale com a organização ou consulte o reembolso.</small>
+                      </div>
+                    </button>
+                    <button type="button">
+                      <span aria-hidden="true">⌖</span>
+                      <div>
+                        <span>Dúvida sobre retirada</span>
+                        <small>Veja o QR, horário e ponto de entrega.</small>
+                      </div>
+                    </button>
+                    <button type="button">
+                      <span aria-hidden="true">?</span>
+                      <div>
+                        <span>Falar com o CampusPay</span>
+                        <small>Abra um atendimento sobre conta ou pagamento.</small>
+                      </div>
+                    </button>
+                  </div>
+                </section>
+              </section>
+            </div>
+          </div>
+        </section>
+
         <section class="view" id="orders" aria-labelledby="orders-title">
           <div class="page-heading">
             <div>
-              <span class="label">Pedidos e reconciliação</span>
-              <h2 id="orders-title">Cada pagamento precisa cair no pedido certo</h2>
+              <h2 id="orders-title">Pedidos</h2>
+              <p class="page-context">Camiseta Atlética 2026 · 139 pagos</p>
             </div>
             <button class="secondary-action" type="button">Exportar CSV</button>
           </div>
@@ -549,30 +1358,20 @@
             </table>
           </section>
 
-          <div class="three-column">
-            <section class="surface">
-              <span class="label">Regra</span>
-              <h3>Idempotência</h3>
-              <p>O mesmo evento externo não duplica receita nem muda status confirmado.</p>
-            </section>
-            <section class="surface">
-              <span class="label">Regra</span>
-              <h3>Reference</h3>
-              <p>Pagamento onchain precisa bater valor, mint, destinatário e referência.</p>
-            </section>
-            <section class="surface">
-              <span class="label">Regra</span>
-              <h3>Privacidade</h3>
-              <p>A evidência pública não carrega nome, telefone, endereço ou itens por pessoa.</p>
-            </section>
+          <div class="info-note">
+            <span aria-hidden="true">🛈</span>
+            <p>
+              Pagamentos duplicados não geram nova receita. Valor, destinatário e
+              referência são validados antes da confirmação.
+            </p>
           </div>
         </section>
 
         <section class="view" id="inventory" aria-labelledby="inventory-title">
           <div class="page-heading">
             <div>
-              <span class="label">Produção e estoque</span>
-              <h2 id="inventory-title">Da demanda paga até a unidade retirada</h2>
+              <h2 id="inventory-title">Produção e estoque</h2>
+              <p class="page-context">Lote 01 · 140 unidades recebidas</p>
             </div>
             <button class="primary-action" type="button" data-jump="pickup">Abrir retirada</button>
           </div>
@@ -641,10 +1440,10 @@
         <section class="view" id="pickup" aria-labelledby="pickup-title">
           <div class="page-heading">
             <div>
-              <span class="label">Retirada no campus</span>
-              <h2 id="pickup-title">Handoff rápido sem expor dados demais</h2>
+              <h2 id="pickup-title">Retirada</h2>
+              <p class="page-context">Quadra central · 28/09, das 18h às 20h</p>
             </div>
-            <span class="status-pill neutral">fila segura offline-ready</span>
+            <span class="status-pill neutral">43 pedidos na janela</span>
           </div>
 
           <div class="pickup-grid">
@@ -708,18 +1507,25 @@
         <section class="view" id="finance" aria-labelledby="finance-title">
           <div class="page-heading">
             <div>
-              <span class="label">Tesouraria</span>
-              <h2 id="finance-title">Pix e Solana no mesmo ledger</h2>
+              <h2 id="finance-title">Financeiro</h2>
+              <p class="page-context">Saldo disponível: R$ 3.260</p>
             </div>
             <button class="secondary-action" type="button">Anexar documento</button>
           </div>
 
-          <div class="two-column wide-right">
+          <div class="two-column finance-layout">
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Ledger de dupla entrada</span>
-                  <h3>Lançamentos confirmados</h3>
+                  <div class="section-title-row">
+                    <h3>Lançamentos</h3>
+                    <button
+                      class="info-hint"
+                      type="button"
+                      title="Cada lançamento possui débito e crédito de mesmo valor."
+                      aria-label="Informações sobre o ledger"
+                    >🛈</button>
+                  </div>
                 </div>
                 <span class="status-pill success">débitos = créditos</span>
               </div>
@@ -769,8 +1575,7 @@
             <section class="surface">
               <div class="surface-header">
                 <div>
-                  <span class="label">Saldos por rail</span>
-                  <h3>Disponível e confirmado</h3>
+                  <h3>Saldos</h3>
                 </div>
               </div>
               <div class="rail-list">
@@ -794,11 +1599,199 @@
           </div>
         </section>
 
+        <section class="view" id="users" aria-labelledby="users-title">
+          <div class="page-heading">
+            <div>
+              <h2 id="users-title">Usuários</h2>
+              <p class="page-context">7 membros · 2 convites pendentes</p>
+            </div>
+            <button class="primary-action" type="button" id="inviteUserButton">
+              Convidar usuário
+            </button>
+          </div>
+
+          <section class="metric-grid compact-metrics" aria-label="Resumo de usuários">
+            <article class="metric-card">
+              <small>Membros ativos</small>
+              <strong>7</strong>
+              <span>na gestão atual</span>
+            </article>
+            <article class="metric-card">
+              <small>Administradores</small>
+              <strong>2</strong>
+              <span>acesso completo</span>
+            </article>
+            <article class="metric-card">
+              <small>Operadores</small>
+              <strong>4</strong>
+              <span>campanhas e retiradas</span>
+            </article>
+            <article class="metric-card">
+              <small>Auditores</small>
+              <strong>1</strong>
+              <span>somente leitura</span>
+            </article>
+          </section>
+
+          <section class="surface">
+            <div class="table-toolbar">
+              <div class="segmented-control" aria-label="Filtro de usuários">
+                <button class="is-selected" type="button">Todos</button>
+                <button type="button">Ativos</button>
+                <button type="button">Convites</button>
+              </div>
+              <div class="section-title-row">
+                <span class="muted-text">Permissões por papel</span>
+                <button
+                  class="info-hint"
+                  type="button"
+                  title="Administradores configuram a organização; operadores cuidam da operação; auditores possuem acesso de leitura."
+                  aria-label="Informações sobre papéis de acesso"
+                >🛈</button>
+              </div>
+            </div>
+            <table class="data-table user-table">
+              <thead>
+                <tr>
+                  <th>Usuário</th>
+                  <th>Papel</th>
+                  <th>Status</th>
+                  <th>Último acesso</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="person-cell"><i>BA</i><span><strong>Bia Andrade</strong><small>bia@atletica.edu.br</small></span></span></td>
+                  <td>Administradora</td>
+                  <td><span class="table-pill success">Ativa</span></td>
+                  <td>Hoje, 15h42</td>
+                  <td><button class="text-action" type="button">Editar</button></td>
+                </tr>
+                <tr>
+                  <td><span class="person-cell"><i>RN</i><span><strong>Rafael Nunes</strong><small>rafael@atletica.edu.br</small></span></span></td>
+                  <td>Tesoureiro</td>
+                  <td><span class="table-pill success">Ativo</span></td>
+                  <td>Hoje, 13h18</td>
+                  <td><button class="text-action" type="button">Editar</button></td>
+                </tr>
+                <tr>
+                  <td><span class="person-cell"><i>LP</i><span><strong>Luiza Prado</strong><small>luiza@atletica.edu.br</small></span></span></td>
+                  <td>Operadora</td>
+                  <td><span class="table-pill success">Ativa</span></td>
+                  <td>Ontem, 19h06</td>
+                  <td><button class="text-action" type="button">Editar</button></td>
+                </tr>
+                <tr>
+                  <td><span class="person-cell"><i>CM</i><span><strong>Caio Martins</strong><small>caio@universidade.edu.br</small></span></span></td>
+                  <td>Auditor</td>
+                  <td><span class="table-pill muted">Convite enviado</span></td>
+                  <td>—</td>
+                  <td><button class="text-action" type="button">Reenviar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+
+        <section class="view" id="logs" aria-labelledby="logs-title">
+          <div class="page-heading">
+            <div>
+              <h2 id="logs-title">Logs</h2>
+              <p class="page-context">Atividades da organização</p>
+            </div>
+            <button class="secondary-action" type="button">Exportar logs</button>
+          </div>
+
+          <div class="log-filters surface" aria-label="Filtros de logs">
+            <label>
+              Período
+              <select>
+                <option>Últimos 30 dias</option>
+                <option>Últimos 7 dias</option>
+                <option>Todo o período</option>
+              </select>
+            </label>
+            <label>
+              Tipo de evento
+              <select>
+                <option>Todos os eventos</option>
+                <option>Campanha</option>
+                <option>Pagamento</option>
+                <option>Retirada</option>
+                <option>Acesso</option>
+              </select>
+            </label>
+            <label>
+              Responsável
+              <select>
+                <option>Todos os usuários</option>
+                <option>Bia Andrade</option>
+                <option>Rafael Nunes</option>
+                <option>Luiza Prado</option>
+              </select>
+            </label>
+          </div>
+
+          <section class="surface log-surface">
+            <div class="surface-header">
+              <h3>Eventos recentes</h3>
+              <div class="section-title-row">
+                <span class="muted-text">Somente leitura</span>
+                <button
+                  class="info-hint"
+                  type="button"
+                  title="Os registros confirmados não podem ser apagados; correções geram um novo evento."
+                  aria-label="Informações sobre os logs"
+                >🛈</button>
+              </div>
+            </div>
+            <div class="log-list">
+              <article class="log-entry">
+                <time datetime="2026-09-07T15:40">Hoje<br /><strong>15h40</strong></time>
+                <span class="event-icon success">✓</span>
+                <div>
+                  <strong>Retirada confirmada</strong>
+                  <p>Bia Andrade confirmou a entrega do pedido CP-4Q22.</p>
+                </div>
+                <span class="table-pill neutral">retirada</span>
+              </article>
+              <article class="log-entry">
+                <time datetime="2026-09-07T13:26">Hoje<br /><strong>13h26</strong></time>
+                <span class="event-icon">▦</span>
+                <div>
+                  <strong>Estoque atualizado</strong>
+                  <p>Luiza Prado reservou uma unidade G para o pedido CP-4Q22.</p>
+                </div>
+                <span class="table-pill neutral">estoque</span>
+              </article>
+              <article class="log-entry">
+                <time datetime="2026-09-07T11:03">Hoje<br /><strong>11h03</strong></time>
+                <span class="event-icon">$</span>
+                <div>
+                  <strong>Pagamento conciliado</strong>
+                  <p>Referência Solana vinculada ao pedido CP-4Q22.</p>
+                </div>
+                <span class="table-pill neutral">pagamento</span>
+              </article>
+              <article class="log-entry">
+                <time datetime="2026-09-06T18:12">Ontem<br /><strong>18h12</strong></time>
+                <span class="event-icon">♙</span>
+                <div>
+                  <strong>Papel de usuário alterado</strong>
+                  <p>Bia Andrade alterou Luiza Prado para Operadora.</p>
+                </div>
+                <span class="table-pill neutral">acesso</span>
+              </article>
+            </div>
+          </section>
+        </section>
+
         <section class="view" id="report" aria-labelledby="report-title">
           <div class="page-heading">
             <div>
-              <span class="label">Fechamento verificável</span>
-              <h2 id="report-title">Prestação de contas pronta para conselho ou universidade</h2>
+              <h2 id="report-title">Fechamento</h2>
+              <p class="page-context">Relatório da campanha · versão 1</p>
             </div>
             <button class="primary-action" type="button" id="tamperButton">Alterar JSON</button>
           </div>
@@ -807,8 +1800,7 @@
             <section class="surface report-document">
               <div class="surface-header">
                 <div>
-                  <span class="label">Relatório público sem PII</span>
-                  <h3>Camiseta Atlética 2026</h3>
+                  <h3>Relatório da campanha</h3>
                 </div>
                 <span class="status-pill success" id="verifyStatus">verificado</span>
               </div>
@@ -845,11 +1837,13 @@
             <aside class="surface verifier">
               <div class="verified-symbol" id="verifiedSymbol">OK</div>
               <span class="label">Solana Devnet</span>
-              <h3 id="verifierTitle">Hash local bate com a âncora</h3>
-              <p id="verifierCopy">
-                O relatório fechado pode ser recalculado e comparado com a transação
-                publicada, sem revelar compradores.
-              </p>
+              <h3 id="verifierTitle">Hash confirmado</h3>
+              <div class="info-copy">
+                <span aria-hidden="true">🛈</span>
+                <p id="verifierCopy">
+                  O hash local corresponde à transação publicada, sem expor compradores.
+                </p>
+              </div>
               <div class="hash-list">
                 <div>
                   <span>Hash local</span>
@@ -869,6 +1863,46 @@
           </div>
         </section>
       </main>
+    </div>
+
+    <dialog class="dialog" id="inviteDialog" aria-labelledby="inviteDialogTitle">
+      <form method="dialog" id="inviteForm">
+        <div class="dialog-header">
+          <div>
+            <h2 id="inviteDialogTitle">Convidar usuário</h2>
+            <p>O convite será vinculado à Atlética Exemplo.</p>
+          </div>
+          <button class="icon-button" type="button" id="closeInviteDialog" aria-label="Fechar">
+            ×
+          </button>
+        </div>
+        <label>
+          E-mail
+          <input type="email" placeholder="nome@universidade.edu.br" required />
+        </label>
+        <label>
+          Papel de acesso
+          <select required>
+            <option value="">Selecione um papel</option>
+            <option>Administradora</option>
+            <option>Tesoureiro</option>
+            <option>Operadora</option>
+            <option>Auditor</option>
+          </select>
+        </label>
+        <div class="info-note dialog-note">
+          <span aria-hidden="true">🛈</span>
+          <p>O acesso poderá ser alterado pela gestão após o aceite do convite.</p>
+        </div>
+        <div class="dialog-actions">
+          <button class="secondary-action" type="button" id="cancelInviteDialog">Cancelar</button>
+          <button class="primary-action" type="submit">Enviar convite</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+      Convite preparado no protótipo.
     </div>
 
     <script src="./scripts/main.js"></script>
