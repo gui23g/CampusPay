@@ -36,6 +36,8 @@ O piloto ideal tem:
 
 Uma organização abre uma campanha, vende, recebe, produz, entrega e fecha suas contas sem reconstruir o histórico em cinco ferramentas diferentes.
 
+Para o comprador, a proposta é saber onde comprar, qual é o status do pedido, quando retirar e como provar que participou da campanha. Para a organização, é operar com menos retrabalho e mais confiança. Para avaliadores, conselhos e próximas gestões, é receber um relatório verificável em vez de uma planilha solta.
+
 ## Superfícies do produto
 
 A versão atual em `web/` separa o produto em três experiências:
@@ -57,6 +59,18 @@ A CampusPay não é apenas uma loja online e não é um banco. O diferencial est
 - relatório final reproduzível;
 - hash ancorado em Solana;
 - histórico preservado para conselho, universidade e próxima gestão.
+
+Esse diferencial é intencionalmente pragmático: a blockchain entra para prova e reconciliação, enquanto dados pessoais, documentos privados e decisões operacionais continuam offchain.
+
+## Indicadores de sucesso do MVP
+
+Para o hackathon, o MVP deve provar:
+
+- que o comprador consegue sair do marketplace local e concluir um pedido;
+- que o gestor consegue criar campanha, produto e acompanhar pedidos;
+- que pagamentos, estoque, retirada e fechamento pertencem ao mesmo histórico;
+- que o relatório público não expõe PII;
+- que Solana tem papel verificável na solução.
 
 ## Modelo comercial futuro
 

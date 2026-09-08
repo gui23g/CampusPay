@@ -45,11 +45,11 @@ A demo acompanha uma atlética vendendo camisetas:
 
 ### 5. Próximos passos
 
-- Integrar Supabase.
-- Implementar schema e RLS.
-- Adicionar Solana Devnet real.
-- Validar com uma atlética ou CA.
-- Preparar piloto com Pix PSP.
+- Validar o fluxo com uma atlética, CA ou DCE real.
+- Refinar policies de RLS e papéis a partir do piloto.
+- Trocar o Pix mock por um PSP real com webhooks assinados.
+- Endurecer validação Solana por valor, mint, destinatário, assinatura e idempotência.
+- Preparar operação assistida para a primeira campanha de verdade.
 
 ## Critérios do hackathon
 
@@ -58,4 +58,6 @@ A demo acompanha uma atlética vendendo camisetas:
 - Fit cultural brasileiro: 20%.
 - Uso da Solana: 15%.
 - Clareza: 10%.
+
+O mapeamento detalhado desses critérios está em [Mapa dos criterios do hackathon](./evaluation-map.md).
 

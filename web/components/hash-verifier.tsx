@@ -57,7 +57,7 @@ export function HashVerifier({
         className="ghost-button"
         type="button"
         onClick={() => {
-          const tampered = json.replace("369640", "999999");
+          const tampered = `${json}\n`;
           setJson(tampered);
           void verify(tampered);
         }}

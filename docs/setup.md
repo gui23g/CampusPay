@@ -55,7 +55,7 @@ Nunca commite `.env.local`, service role, seed phrase, keypair Solana ou segredo
 6. Copie a Project URL e a publishable key para `web/.env.local`.
 7. Copie a service role key apenas para ambiente server-side.
 
-O upload de imagem da tela `/app/campaigns/camiseta-2026` funciona como preview local quando mocks estão ligados. Com Supabase preenchido e `NEXT_PUBLIC_ENABLE_MOCKS=false`, o upload envia para o bucket `product-images`.
+O upload de imagem da tela `/app/campaigns/:id` funciona como preview local quando mocks estão ligados. Com Supabase preenchido e `NEXT_PUBLIC_ENABLE_MOCKS=false`, o upload envia para o bucket `product-images`.
 
 ## 4. Solana Devnet
 
@@ -149,8 +149,9 @@ O fluxo final deve ter um adapter para PSP real:
 - Treasury address preenchido.
 - RPC configurado.
 - `NEXT_PUBLIC_ENABLE_MOCKS=false`.
-- Teste manual de upload em `/app/campaigns/camiseta-2026`.
-- Teste manual de Solana Pay em `/c/camisa-atletica-2026`.
+- Teste manual de upload em `/app/campaigns/:id`.
+- Teste manual de Solana Pay em `/c/:campaignSlug`.
+- Teste de acesso protegido: abra `/app` ou `/me` sem sessão e confirme o redirecionamento para `/login`.
 
 ## 7. Teste de ponta a ponta com Supabase real
 
@@ -160,10 +161,10 @@ O fluxo final deve ter um adapter para PSP real:
 4. Vá para `/app/campaigns/new` e crie campanha/produto.
 5. Abra `/login` em outro navegador ou sessão e crie uma conta compradora.
 6. Complete o perfil em `/me`.
-7. Abra `/c/camisa-atletica-2026` ou a campanha criada e gere um pedido.
+7. Abra `/c/:campaignSlug` da campanha criada e gere um pedido.
 8. Na área do dono, confirme pagamento em `/app/orders` usando a reference.
 9. Confirme retirada em `/app/pickup` usando código do pedido e PIN.
-10. Gere snapshot em `/app/reports/camiseta-2026`.
+10. Gere snapshot em `/app/reports/latest` e abra a URL pública retornada.
 
 Enquanto `NEXT_PUBLIC_ENABLE_MOCKS=true`, esses passos retornam dados simulados. Para persistência real, use `false`.
 

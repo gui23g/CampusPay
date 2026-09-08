@@ -1,7 +1,7 @@
 import { PickupConfirmation } from "@/components/pickup-confirmation";
+import { LiveOrdersTable } from "@/components/live-orders-table";
 import { PageFrame } from "@/components/navigation";
-import { EmptyState, Pill, Section } from "@/components/ui";
-import { orders, pickupWindows } from "@/lib/dashboard-data";
+import { EmptyState, Section } from "@/components/ui";
 
 export default function PickupPage() {
   return (
@@ -18,46 +18,15 @@ export default function PickupPage() {
         </Section>
 
         <Section title="Janelas ativas" eyebrow="Agenda">
-          <div className="list-stack">
-            {pickupWindows.map((window) => (
-              <div className="list-item" key={`${window.date}-${window.time}`}>
-                <strong>
-                  {window.date}, {window.time}
-                </strong>
-                <span>
-                  {window.place} · {window.booked}/{window.capacity} agendados
-                </span>
-              </div>
-            ))}
-          </div>
+          <EmptyState
+            title="Agenda real ainda vazia"
+            body="Quando a organização cadastrar horários de retirada, eles aparecem aqui. A validação por PIN já funciona no fluxo real."
+          />
         </Section>
       </div>
 
-      <Section title="Pedidos prontos" eyebrow="Fila">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Pedido</th>
-              <th>Comprador</th>
-              <th>PIN</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders
-              .filter((order) => order.status !== "Pagamento pendente")
-              .map((order) => (
-                <tr key={order.code}>
-                  <td>{order.code}</td>
-                  <td>{order.buyer}</td>
-                  <td>{order.pickupPin}</td>
-                  <td>
-                    <Pill tone={order.status === "Retirado" ? "good" : "info"}>{order.status}</Pill>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+      <Section title="Pedidos da organização" eyebrow="Fila">
+        <LiveOrdersTable compact scope="organization" showActions={false} />
       </Section>
     </PageFrame>
   );

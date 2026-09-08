@@ -1,12 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api-client";
-import { campaign as mockCampaign, variants as mockVariants } from "@/lib/mock-data";
 import { formatCents } from "@/lib/currency";
-import { publicEnv } from "@/lib/env";
-import { buildSolanaPayUrl } from "@/lib/solana";
 
 type ApiVariant = {
   id?: string;
@@ -35,6 +32,7 @@ type ApiCampaign = {
 };
 
 type CampaignsResponse = {
+  mode?: string;
   campaigns: ApiCampaign[];
 };
 
@@ -74,8 +72,6 @@ type CreatedOrderResponse = {
   mode?: string;
 };
 
-const previewSolanaReference = "11111111111111111111111111111111";
-
 function referencePrefix(slug: string) {
   return `CPAY-${slug
     .normalize("NFD")
@@ -85,47 +81,32 @@ function referencePrefix(slug: string) {
     .toUpperCase()}`;
 }
 
-function initialCampaign(campaignSlug: string, useMockData: boolean): CheckoutCampaign {
-  const isMockCampaign = useMockData && campaignSlug === mockCampaign.slug;
-
+function initialCampaign(campaignSlug: string): CheckoutCampaign {
   return {
     slug: campaignSlug,
-    name: isMockCampaign ? mockCampaign.name : "Carregando campanha",
-    purpose: isMockCampaign ? mockCampaign.purpose : "Buscando informações públicas da campanha.",
-    productImage: isMockCampaign ? mockCampaign.productImage : "",
-    unitPriceCents: isMockCampaign ? mockCampaign.unitPriceCents : 0,
-    paymentReferencePrefix: isMockCampaign
-      ? mockCampaign.paymentReferencePrefix
-      : referencePrefix(campaignSlug)
+    name: "Carregando campanha",
+    purpose: "Buscando informações públicas da campanha.",
+    productImage: "",
+    unitPriceCents: 0,
+    paymentReferencePrefix: referencePrefix(campaignSlug)
   };
 }
 
-function initialVariants(campaignSlug: string, useMockData: boolean): CheckoutVariant[] {
-  if (!useMockData || campaignSlug !== mockCampaign.slug) return [];
-
-  return mockVariants.map((variant) => ({
-    id: variant.id,
-    label: variant.label,
-    sku: variant.sku,
-    priceCents: mockCampaign.unitPriceCents
-  }));
-}
-
-function normalizeCampaign(item: ApiCampaign, fallbackSlug: string, useMockData: boolean): CheckoutCampaign {
+function normalizeCampaign(item: ApiCampaign, fallbackSlug: string): CheckoutCampaign {
   const firstProduct = item.products?.[0];
   const firstVariant = firstProduct?.product_variants?.find((variant) => variant.active !== false);
   const slug = item.slug || fallbackSlug;
 
   return {
     slug,
-    name: item.title || item.name || (useMockData ? mockCampaign.name : "Campanha sem título"),
-    purpose: item.purpose || (useMockData ? mockCampaign.purpose : "Descrição pública não informada."),
-    productImage: firstProduct?.image_url || item.productImage || (useMockData ? mockCampaign.productImage : ""),
+    name: item.title || item.name || "Campanha sem título",
+    purpose: item.purpose || "Descrição pública não informada.",
+    productImage: firstProduct?.image_url || item.productImage || "",
     unitPriceCents:
       firstVariant?.price_cents ??
       firstVariant?.priceCents ??
       item.unitPriceCents ??
-      (useMockData ? mockCampaign.unitPriceCents : 0),
+      0,
     paymentReferencePrefix: referencePrefix(slug)
   };
 }
@@ -145,17 +126,15 @@ function normalizeVariants(products: ApiProduct[], fallbackPriceCents: number): 
 }
 
 export function CheckoutCard({ campaignSlug }: { campaignSlug: string }) {
-  const mocksEnabled = publicEnv().enableMocks;
-  const initialVariantList = initialVariants(campaignSlug, mocksEnabled);
   const [activeCampaign, setActiveCampaign] = useState<CheckoutCampaign>(() =>
-    initialCampaign(campaignSlug, mocksEnabled)
+    initialCampaign(campaignSlug)
   );
-  const [availableVariants, setAvailableVariants] = useState<CheckoutVariant[]>(initialVariantList);
-  const [campaignAvailable, setCampaignAvailable] = useState(mocksEnabled && campaignSlug === mockCampaign.slug);
-  const [variantId, setVariantId] = useState(initialVariantList[2]?.id || initialVariantList[0]?.id || "");
+  const [availableVariants, setAvailableVariants] = useState<CheckoutVariant[]>([]);
+  const [campaignAvailable, setCampaignAvailable] = useState(false);
+  const [variantId, setVariantId] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [method, setMethod] = useState<"pix" | "solana">("pix");
-  const [buyerEmail, setBuyerEmail] = useState(mocksEnabled ? "lia@sou.inteli.edu.br" : "");
+  const [buyerEmail, setBuyerEmail] = useState("");
   const [createdOrder, setCreatedOrder] = useState<CreatedOrderResponse | null>(null);
   const [message, setMessage] = useState("");
   const [dataMessage, setDataMessage] = useState("");
@@ -180,7 +159,7 @@ export function CheckoutCard({ campaignSlug }: { campaignSlug: string }) {
           return;
         }
 
-        const normalizedCampaign = normalizeCampaign(loadedCampaign, campaignSlug, mocksEnabled);
+        const normalizedCampaign = normalizeCampaign(loadedCampaign, campaignSlug);
         const normalizedVariants = normalizeVariants(productResponse.products, normalizedCampaign.unitPriceCents);
 
         setActiveCampaign(normalizedCampaign);
@@ -193,15 +172,9 @@ export function CheckoutCard({ campaignSlug }: { campaignSlug: string }) {
         );
       } catch (error) {
         if (!mounted) return;
-        setAvailableVariants(mocksEnabled ? initialVariants(campaignSlug, true) : []);
-        setCampaignAvailable(mocksEnabled && campaignSlug === mockCampaign.slug);
-        setDataMessage(
-          error instanceof Error
-            ? error.message
-            : mocksEnabled
-              ? "Usando dados de demonstração."
-              : "Não foi possível carregar a campanha real."
-        );
+        setAvailableVariants([]);
+        setCampaignAvailable(false);
+        setDataMessage(error instanceof Error ? error.message : "Não foi possível carregar a campanha real.");
       }
     }
 
@@ -210,23 +183,11 @@ export function CheckoutCard({ campaignSlug }: { campaignSlug: string }) {
     return () => {
       mounted = false;
     };
-  }, [campaignSlug, mocksEnabled]);
+  }, [campaignSlug]);
 
   const variant = availableVariants.find((item) => item.id === variantId) || availableVariants[0];
   const amountCents = (variant?.priceCents || activeCampaign.unitPriceCents) * quantity;
   const reference = `${activeCampaign.paymentReferencePrefix}-${variant?.sku || "ITEM"}-${quantity}`;
-
-  const solanaUrl = useMemo(
-    () =>
-      buildSolanaPayUrl({
-        amount: amountCents / 100,
-        reference: previewSolanaReference,
-        label: "CampusPay",
-        message: `Pedido ${reference}`,
-        memo: reference
-      }),
-    [amountCents, reference]
-  );
 
   async function submitOrder() {
     if (!campaignAvailable || !variant || !buyerEmail) {

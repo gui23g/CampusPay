@@ -10,7 +10,7 @@ Leia também:
 
 ## Estado atual do repositório
 
-O repositório contém a aplicação principal em `web/`: MVP final em Next.js/TypeScript, com rotas reais, dados mockados por padrão e pontos de integração Supabase/Solana.
+O repositório contém a aplicação principal em `web/`: MVP final em Next.js/TypeScript, com rotas reais, modo mock opcional e pontos de integração Supabase/Solana.
 
 A versão principal para desenvolvimento é `web/`. Ela já valida:
 
@@ -30,7 +30,7 @@ A versão principal para desenvolvimento é `web/`. Ela já valida:
 - logs de atividade;
 - relatório e verificador de hash com simulação de adulteração.
 
-Não assumir que já existe backend real. O app usa mocks para demo e deve ser ligado a Supabase/Solana pelos contratos documentados.
+O app usa mocks apenas para demo offline quando `NEXT_PUBLIC_ENABLE_MOCKS=true`. Com a flag em `false`, as telas finais protegidas e públicas buscam Supabase via route handlers e não devem renderizar dados de demonstração.
 
 ## Stack alvo aprovada
 
@@ -56,6 +56,7 @@ Não assumir que já existe backend real. O app usa mocks para demo e deve ser l
 - `web/lib/mock-data.ts` guarda dados de demo.
 - `web/lib/api-server.ts` centraliza Bearer token, Supabase service role, RBAC e audit log.
 - `web/lib/api-client.ts` adiciona sessão Supabase nas chamadas client-side.
+- `web/components/auth-gate.tsx` protege `/app/*` e `/me/*` quando `NEXT_PUBLIC_ENABLE_MOCKS=false`, redirecionando para `/login?next=...`.
 - `supabase/schema.sql` define schema inicial, enums, buckets e RLS base.
 
 ## CRUD/API implementados
@@ -74,6 +75,11 @@ Não assumir que já existe backend real. O app usa mocks para demo e deve ser l
 - `POST /api/payments/confirm`.
 - `POST /api/fulfillments/confirm`.
 - `POST /api/reports`.
+- `GET /api/management/overview`.
+- `GET /api/inventory`.
+- `GET /api/finance`.
+- `GET /api/audit-events`.
+- `GET /api/reports/:publicId`.
 
 Deletes preservam histórico:
 
@@ -289,7 +295,7 @@ Nunca confiar apenas na assinatura retornada pelo cliente. O servidor deve valid
 1. Revisar `docs/setup.md` e preencher `web/.env.local`.
 2. Executar `supabase/schema.sql` em um projeto Supabase.
 3. Testar `/login`, `/app/users`, `/app/campaigns/new`, `/c/:slug`, `/app/orders`, `/app/pickup` e `/app/reports/:id`.
-4. Trocar visões analíticas restantes por queries reais do piloto.
+4. Validar queries reais do piloto nas telas de gestão, inventário, financeiro, logs e relatório.
 5. Implementar webhooks/adapter Pix real.
 6. Implementar watcher/validador Solana real.
 7. Refinar transações de ledger e garantias de atomicidade.

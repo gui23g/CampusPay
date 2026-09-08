@@ -60,6 +60,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ confirmed: true, alreadyProcessed: true });
   }
 
+  if (order.status !== "paid") {
+    return jsonError("Pagamento ainda não confirmado para retirada.", 409);
+  }
+
   const { data: fulfillment, error: fulfillmentError } = await admin
     .from("fulfillments")
     .insert({

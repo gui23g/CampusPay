@@ -1,7 +1,6 @@
 import { CampusCampaignList } from "@/components/campus-campaign-list";
 import { PageFrame } from "@/components/navigation";
 import { Section } from "@/components/ui";
-import { organization } from "@/lib/dashboard-data";
 
 export default async function CampusMarketplacePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -9,7 +8,7 @@ export default async function CampusMarketplacePage({ params }: { params: Promis
   return (
     <PageFrame active="campus" audience="buyer">
       <section className="hero-panel">
-        <span className="eyebrow">{organization.campus}</span>
+        <span className="eyebrow">{slug}</span>
         <h1>Campanhas abertas no campus</h1>
         <p>
           Compre de entidades estudantis com status claro, pagamento rastreado e retirada combinada

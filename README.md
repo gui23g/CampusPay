@@ -2,7 +2,7 @@
 
 MVP da CampusPay para o Hackathon Universitário da Superteam Brasil.
 
-A versão principal agora está em `web/`: uma aplicação Next.js/TypeScript com rotas reais, dados mockados por padrão, modo claro/noturno e pontos de integração para Supabase, Supabase Storage, Pix e Solana Devnet.
+A versão principal agora está em `web/`: uma aplicação Next.js/TypeScript com rotas reais, modo mock opcional, modo claro/noturno e integrações para Supabase, Supabase Storage, Pix e Solana Devnet.
 
 `criar campanha → aprovar → vender → reconciliar pagamento → produzir → retirar com QR → fechar relatório → verificar hash`
 
@@ -19,9 +19,9 @@ Depois acesse:
 
 - `http://localhost:3000/app` para a área de gestão.
 - `http://localhost:3000/campus/inteli-sp` para o marketplace local.
-- `http://localhost:3000/c/camisa-atletica-2026` para o checkout público.
+- `http://localhost:3000/c/:campaignSlug` para o checkout público de uma campanha criada.
 - `http://localhost:3000/me` para a conta do comprador.
-- `http://localhost:3000/reports/rel-camiseta-2026` para o relatório público.
+- `http://localhost:3000/reports/:publicId` para o relatório público gerado no fechamento.
 
 Fluxo público validado: o marketplace em `/campus/:slug` lista campanhas publicadas por API, o botão de compra abre `/c/:campaignSlug`, e o checkout cria pedido em `/api/orders`.
 
@@ -40,9 +40,9 @@ O passo a passo completo está em `docs/setup.md`.
 
 ## Usuários e CRUD
 
-Usuários reais são criados em `/login` via Supabase Auth. Depois:
+Usuários reais são criados em `/login` via Supabase Auth. Com `NEXT_PUBLIC_ENABLE_MOCKS=false`, as rotas `/app/*` e `/me/*` exigem sessão e redirecionam para `/login?next=...`. Depois:
 
-- comprador completa perfil em `/me`, compra em `/c/camisa-atletica-2026`, acompanha pedidos em `/me/orders` e QR em `/me/pickups/:orderCode`;
+- comprador completa perfil em `/me`, compra pelo fluxo `/campus/:slug` → `/c/:campaignSlug`, acompanha pedidos em `/me/orders` e PIN em `/me/pickups/:orderCode`;
 - dono cria organização em `/app/users`, cria convites, cria campanha/produto em `/app/campaigns/new`, publica status, opera pedidos, pagamentos, retirada e relatório nas rotas `/app/*`.
 
 O contrato completo está em `docs/crud-flows.md`.
@@ -51,12 +51,22 @@ O contrato completo está em `docs/crud-flows.md`.
 
 - `web/`: MVP final em Next.js, pronto para configuração de envs.
 - `supabase/schema.sql`: schema inicial, buckets e políticas base.
-- `docs/`: documentação de negócio, produto, arquitetura, setup e roadmap.
+- `docs/`: documentação para avaliadores, negócio, demo, arquitetura, setup, segurança e roadmap.
 - `.context/`: contexto mestre usado por pessoas e agentes de desenvolvimento.
+
+## Documentação para avaliação
+
+Comece por `docs/README.md`. Os principais documentos para banca são:
+
+- `docs/executive-summary.md`: resumo executivo do projeto.
+- `docs/evaluation-map.md`: aderência aos critérios do hackathon.
+- `docs/demo-guide.md`: roteiro de navegação e validação do MVP.
+- `docs/architecture.md`: arquitetura técnica e integrações.
+- `docs/setup.md`: configuração local, Supabase, Storage, Solana e Pix.
 
 ## Estrutura
 
 - `web/`: aplicação final do MVP.
 - `supabase/`: schema SQL inicial.
-- `docs/`: documentação de negócio, produto, arquitetura e roadmap.
+- `docs/`: documentação de avaliação, negócio, produto, arquitetura e roadmap.
 - `.context/`: contexto mestre usado por pessoas e agentes de desenvolvimento.

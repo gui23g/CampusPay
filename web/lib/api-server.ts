@@ -120,6 +120,20 @@ export async function isOrganizationMember(
   return Boolean(data);
 }
 
+export async function listUserOrganizationIds(admin: SupabaseClient, userId: string) {
+  const { data, error } = await admin
+    .from("organization_memberships")
+    .select("organization_id")
+    .eq("user_id", userId)
+    .eq("active", true);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data || []).map((membership) => String(membership.organization_id));
+}
+
 export async function logAuditEvent(
   admin: SupabaseClient,
   input: {

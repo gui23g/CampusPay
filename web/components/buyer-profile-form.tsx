@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api-client";
-import { publicEnv } from "@/lib/env";
-import { buyerProfile } from "@/lib/mock-data";
 
 type ProfileResponse = {
   mode?: string;
@@ -29,12 +27,11 @@ type ProfileResponse = {
 };
 
 export function BuyerProfileForm() {
-  const mocksEnabled = publicEnv().enableMocks;
-  const [fullName, setFullName] = useState(mocksEnabled ? buyerProfile.name : "");
-  const [campus, setCampus] = useState(mocksEnabled ? buyerProfile.campus : "");
-  const [institution, setInstitution] = useState(mocksEnabled ? "Inteli" : "");
+  const [fullName, setFullName] = useState("");
+  const [campus, setCampus] = useState("");
+  const [institution, setInstitution] = useState("");
   const [phone, setPhone] = useState("");
-  const [walletAddress, setWalletAddress] = useState(mocksEnabled ? buyerProfile.wallet : "");
+  const [walletAddress, setWalletAddress] = useState("");
   const [theme, setTheme] = useState("system");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);

@@ -3,4 +3,8 @@ import nextTypescript from "eslint-config-next/typescript";
 
 const eslintConfig = [...nextVitals, ...nextTypescript];
 
+eslintConfig.unshift({
+  ignores: [".next/**", "node_modules/**", "out/**", "dist/**", "build/**"]
+});
+
 export default eslintConfig;

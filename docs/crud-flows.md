@@ -18,6 +18,8 @@ Fluxo:
 6. A sessão do Supabase fica no navegador.
 7. As chamadas para `/api/*` enviam `Authorization: Bearer <access_token>`.
 
+Com `NEXT_PUBLIC_ENABLE_MOCKS=false`, as rotas `/app/*` e `/me/*` exigem sessão no navegador e redirecionam para `/login?next=...`.
+
 Uma mesma conta pode ser comprador e membro de organização. O que muda é a existência de registros em `organization_memberships`.
 
 ## Comprador

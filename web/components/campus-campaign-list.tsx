@@ -3,9 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api-client";
-import { campaign as mockCampaign } from "@/lib/mock-data";
 import { formatCents } from "@/lib/currency";
-import { publicEnv } from "@/lib/env";
 import { EmptyState, Pill, ProgressBar } from "@/components/ui";
 
 type ApiVariant = {
@@ -44,6 +42,7 @@ type ApiCampaign = {
 };
 
 type CampaignsResponse = {
+  mode?: string;
   campaigns: ApiCampaign[];
 };
 
@@ -89,15 +88,8 @@ function normalizeCampaign(item: ApiCampaign): MarketplaceCampaign {
   };
 }
 
-function initialCampaigns(campusSlug: string) {
-  return mockCampaign.campusSlug === campusSlug ? [normalizeCampaign(mockCampaign)] : [];
-}
-
 export function CampusCampaignList({ campusSlug }: { campusSlug: string }) {
-  const mocksEnabled = publicEnv().enableMocks;
-  const [campaigns, setCampaigns] = useState<MarketplaceCampaign[]>(() =>
-    mocksEnabled ? initialCampaigns(campusSlug) : []
-  );
+  const [campaigns, setCampaigns] = useState<MarketplaceCampaign[]>([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -107,24 +99,18 @@ export function CampusCampaignList({ campusSlug }: { campusSlug: string }) {
       .then((response) => {
         if (!mounted) return;
         setCampaigns(response.campaigns.map(normalizeCampaign));
-        setMessage("");
+        setMessage(response.mode === "mock" ? "Modo mock ativo: exibindo campanhas de demonstração." : "");
       })
       .catch((error) => {
         if (!mounted) return;
-        setCampaigns(mocksEnabled ? initialCampaigns(campusSlug) : []);
-        setMessage(
-          error instanceof Error
-            ? error.message
-            : mocksEnabled
-              ? "Usando campanhas de demonstração."
-              : "Não foi possível carregar campanhas reais."
-        );
+        setCampaigns([]);
+        setMessage(error instanceof Error ? error.message : "Não foi possível carregar campanhas reais.");
       });
 
     return () => {
       mounted = false;
     };
-  }, [campusSlug, mocksEnabled]);
+  }, [campusSlug]);
 
   if (campaigns.length === 0) {
     return (

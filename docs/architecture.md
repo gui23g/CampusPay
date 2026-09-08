@@ -48,9 +48,7 @@ supabase/
   schema.sql                schema inicial, buckets e RLS base
 ```
 
-Os mocks continuam disponíveis para demo. As rotas públicas de marketplace/checkout e os fluxos operacionais principais já passam por route handlers, usando Supabase quando `NEXT_PUBLIC_ENABLE_MOCKS=false`.
-
-Algumas visões analíticas ainda usam dados agregados de demonstração enquanto não houver piloto real, mas os fluxos de criação de campanha, produto, pedido, convite, pagamento, retirada e relatório já têm contrato server-side.
+Os mocks continuam disponíveis para demo offline. Com `NEXT_PUBLIC_ENABLE_MOCKS=false`, as rotas públicas de marketplace/checkout e as telas de gestão passam por route handlers com Supabase, sem renderizar dados de demonstração.
 
 ## Arquitetura alvo
 

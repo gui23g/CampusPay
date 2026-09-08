@@ -3,6 +3,7 @@ import { campaign as mockCampaign, variants as mockVariants } from "@/lib/mock-d
 import {
   isMockMode,
   isOrganizationAdmin,
+  listUserOrganizationIds,
   logAuditEvent,
   optionalUser,
   readJson,
@@ -56,29 +57,57 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const { admin } = await optionalUser(request);
+  const { admin, user } = await optionalUser(request);
   if (!admin) {
     return NextResponse.json({ error: "Supabase service role não está configurado." }, { status: 503 });
   }
+  const supabaseAdmin = admin;
 
-  let query = campaignSlug
-    ? admin
-        .from("products")
-        .select("*, product_variants(*), campaigns!inner(slug)")
-        .eq("campaigns.slug", campaignSlug)
-    : admin.from("products").select("*, product_variants(*)");
+  function baseQuery() {
+    let query = supabaseAdmin
+      .from("products")
+      .select("*, product_variants(*), campaigns!inner(slug, status, organization_id)");
 
-  if (campaignId) {
-    query = query.eq("campaign_id", campaignId);
+    if (campaignSlug) {
+      query = query.eq("campaigns.slug", campaignSlug);
+    }
+
+    if (campaignId) {
+      query = query.eq("campaign_id", campaignId);
+    }
+
+    return query;
   }
 
-  const { data, error } = await query;
+  const publicStatuses = ["approved", "selling", "production", "pickup", "closed"];
+  const publicQuery = baseQuery().in("campaigns.status", publicStatuses);
+  const organizationIds = user ? await listUserOrganizationIds(admin, user.id) : [];
+  const memberQuery =
+    organizationIds.length > 0
+      ? baseQuery().in("campaigns.organization_id", organizationIds)
+      : null;
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  const [publicResult, memberResult] = await Promise.all([
+    publicQuery,
+    memberQuery || Promise.resolve({ data: [], error: null })
+  ]);
+
+  if (publicResult.error) {
+    return NextResponse.json({ error: publicResult.error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ products: data });
+  if (memberResult.error) {
+    return NextResponse.json({ error: memberResult.error.message }, { status: 500 });
+  }
+
+  const products = new Map<string, unknown>();
+  [...(publicResult.data || []), ...(memberResult.data || [])].forEach((product) => {
+    if (product && typeof product === "object" && "id" in product) {
+      products.set(String(product.id), product);
+    }
+  });
+
+  return NextResponse.json({ products: Array.from(products.values()) });
 }
 
 export async function POST(request: NextRequest) {

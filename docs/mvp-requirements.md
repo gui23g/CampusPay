@@ -103,7 +103,7 @@ Entregar um vertical slice demonstrável:
 
 ## Versão atual implementada
 
-A pasta `web/` contém a versão final do MVP em Next.js/TypeScript, com dados mockados por padrão e pontos de integração preparados para Supabase e Solana:
+A pasta `web/` contém a versão final do MVP em Next.js/TypeScript, com modo mock opcional e integrações preparadas para Supabase e Solana:
 
 - rotas reais para Gestão, Marketplace, Minha conta e Relatório público;
 - login/cadastro via Supabase Auth;
@@ -111,7 +111,7 @@ A pasta `web/` contém a versão final do MVP em Next.js/TypeScript, com dados m
 - soft delete/cancelamento para preservar histórico;
 - endpoints para confirmação de pagamento, retirada e fechamento;
 - modo claro/noturno com persistência local;
-- visão geral da campanha;
+- visão geral da campanha alimentada por API real quando mocks estão desligados;
 - campanha versionada e produto com imagem;
 - upload de imagem com fallback local e envio para Supabase Storage quando configurado;
 - marketplace local por campus;
@@ -119,11 +119,12 @@ A pasta `web/` contém a versão final do MVP em Next.js/TypeScript, com dados m
 - conta do comprador;
 - QR de retirada do estudante;
 - pedidos e reconciliação;
-- produção e estoque;
+- produção e estoque alimentados por Supabase quando mocks estão desligados;
 - retirada;
-- financeiro e ledger;
+- financeiro e ledger alimentados por Supabase quando mocks estão desligados;
 - usuários, convites e papéis;
-- logs de atividade;
-- relatório/verificador com simulação de adulteração do JSON.
+- logs de atividade alimentados por Supabase quando mocks estão desligados;
+- relatório público carregado de `report_snapshots` quando mocks estão desligados;
+- verificador com simulação de adulteração do JSON.
 
 O repositório fica focado na aplicação final em `web/`.

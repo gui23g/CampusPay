@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildSolanaPayUrl } from "@/lib/solana";
-import { campaign as mockCampaign, orders as mockOrders } from "@/lib/mock-data";
+import { buyerProfile, campaign as mockCampaign, orders as mockOrders } from "@/lib/mock-data";
 import { isMockMode, logAuditEvent, optionalUser, readJson, requireUser } from "@/lib/api-server";
 import {
   createOrderCode,
@@ -20,14 +20,25 @@ type OrderPayload = {
   idempotencyKey?: string;
 };
 
+function referencePrefix(slug: string) {
+  return `CPAY-${slug
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toUpperCase()}`;
+}
+
 export async function GET(request: NextRequest) {
   const scope = request.nextUrl.searchParams.get("scope") || "all";
   const buyerEmail = request.nextUrl.searchParams.get("buyerEmail");
 
   if (isMockMode()) {
     const orders =
-      scope === "buyer" && buyerEmail
-        ? mockOrders.filter((order) => order.buyerEmail.toLowerCase() === buyerEmail.toLowerCase())
+      scope === "buyer"
+        ? mockOrders.filter((order) =>
+            order.buyerEmail.toLowerCase() === (buyerEmail || buyerProfile.email).toLowerCase()
+          )
         : mockOrders;
 
     return NextResponse.json({ mode: "mock", orders });
@@ -104,11 +115,11 @@ export async function POST(request: NextRequest) {
   const idempotencyKey = body.idempotencyKey || randomToken(12);
   const orderCode = createOrderCode();
   const pickupPin = createPickupPin();
-  const orderReference = `${mockCampaign.paymentReferencePrefix}-${orderCode}`;
-  const reference = paymentRail === "solana" ? createSolanaReference() : orderReference;
 
   if (isMockMode()) {
     const amountCents = mockCampaign.unitPriceCents * quantity;
+    const orderReference = `${mockCampaign.paymentReferencePrefix}-${orderCode}`;
+    const reference = paymentRail === "solana" ? createSolanaReference() : orderReference;
     return NextResponse.json(
       {
         mode: "mock",
@@ -163,6 +174,8 @@ export async function POST(request: NextRequest) {
 
   const campaignSlug = String(body.campaignSlug || "");
   const buyerEmail = String(body.buyerEmail || user?.email || "").trim();
+  const orderReference = `${referencePrefix(campaignSlug)}-${orderCode}`;
+  const reference = paymentRail === "solana" ? createSolanaReference() : orderReference;
 
   if (!campaignSlug || !buyerEmail) {
     return NextResponse.json({ error: "campaignSlug e buyerEmail são obrigatórios." }, { status: 400 });

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { apiRequest } from "@/lib/api-client";
-import { campaign } from "@/lib/mock-data";
 
 type CampaignResponse = {
   campaign: {
@@ -14,15 +13,18 @@ type CampaignResponse = {
 
 export function CampaignBuilder() {
   const [organizationId, setOrganizationId] = useState("");
-  const [title, setTitle] = useState(campaign.name);
-  const [slug, setSlug] = useState(campaign.slug);
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [status, setStatus] = useState("selling");
-  const [purpose, setPurpose] = useState(campaign.purpose);
-  const [description, setDescription] = useState("Pré-venda da camisa oficial com retirada no campus.");
-  const [minUnits, setMinUnits] = useState(campaign.minUnits);
-  const [goalUnits, setGoalUnits] = useState(campaign.goalUnits);
-  const [priceCents, setPriceCents] = useState(campaign.unitPriceCents);
+  const [purpose, setPurpose] = useState("");
+  const [description, setDescription] = useState("");
+  const [campusSlug, setCampusSlug] = useState("inteli-sp");
+  const [productName, setProductName] = useState("Camisa oficial");
+  const [minUnits, setMinUnits] = useState(1);
+  const [goalUnits, setGoalUnits] = useState(1);
+  const [priceCents, setPriceCents] = useState(0);
   const [message, setMessage] = useState("");
+  const [createdCampaign, setCreatedCampaign] = useState<CampaignResponse["campaign"] | null>(null);
   const [loading, setLoading] = useState(false);
 
   function loadSavedOrganization() {
@@ -43,7 +45,7 @@ export function CampaignBuilder() {
           status,
           purpose,
           description,
-          campusSlug: "inteli-sp",
+          campusSlug,
           minUnits,
           goalUnits
         }
@@ -53,9 +55,8 @@ export function CampaignBuilder() {
         method: "POST",
         body: {
           campaignId: campaignResponse.campaign.id,
-          name: "Camisa oficial",
+          name: productName,
           description,
-          imageUrl: campaign.productImage,
           variants: ["PP", "P", "M", "G", "GG"].map((size) => ({
             sku: `CAM-${size}`,
             label: size,
@@ -65,6 +66,7 @@ export function CampaignBuilder() {
         }
       });
 
+      setCreatedCampaign(campaignResponse.campaign);
       setMessage(`Campanha criada: /c/${campaignResponse.campaign.slug}`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Não foi possível criar a campanha.");
@@ -94,6 +96,14 @@ export function CampaignBuilder() {
         <label>
           Slug
           <input className="text-input" value={slug} onChange={(event) => setSlug(event.target.value)} />
+        </label>
+        <label>
+          Campus slug
+          <input className="text-input" value={campusSlug} onChange={(event) => setCampusSlug(event.target.value)} />
+        </label>
+        <label>
+          Produto
+          <input className="text-input" value={productName} onChange={(event) => setProductName(event.target.value)} />
         </label>
         <label>
           Preço em centavos
@@ -149,6 +159,16 @@ export function CampaignBuilder() {
         </button>
       </div>
       {message ? <div className="status-message">{message}</div> : null}
+      {createdCampaign ? (
+        <div className="inline-actions">
+          <a className="ghost-button" href={`/app/campaigns/${createdCampaign.id}`}>
+            Abrir gestão
+          </a>
+          <a className="ghost-button" href={`/c/${createdCampaign.slug}`}>
+            Abrir checkout
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 }

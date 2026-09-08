@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { apiRequest } from "@/lib/api-client";
-import { publicEnv } from "@/lib/env";
 
 export function PickupConfirmation() {
-  const mocksEnabled = publicEnv().enableMocks;
-  const [orderCode, setOrderCode] = useState(mocksEnabled ? "CP-2048" : "");
-  const [pickupPin, setPickupPin] = useState(mocksEnabled ? "417-882" : "");
+  const [orderCode, setOrderCode] = useState("");
+  const [pickupPin, setPickupPin] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 

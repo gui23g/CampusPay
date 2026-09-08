@@ -15,7 +15,7 @@ type OrderPatchPayload = {
 async function loadOrder(admin: SupabaseClient, code: string) {
   const { data, error } = await admin
     .from("orders")
-    .select("id, code, organization_id, buyer_id, status")
+    .select("id, code, organization_id, buyer_id, buyer_email, status")
     .eq("code", code)
     .single();
 
@@ -48,7 +48,7 @@ export async function GET(
   }
 
   const member = await isOrganizationMember(admin, user.id, data.organization_id);
-  const buyer = data.buyer_id === user.id;
+  const buyer = data.buyer_id === user.id || (!data.buyer_id && data.buyer_email === user.email);
 
   if (!member && !buyer) {
     return NextResponse.json({ error: "Você não pode ver este pedido." }, { status: 403 });
@@ -79,7 +79,7 @@ export async function PATCH(
   }
 
   const member = await isOrganizationMember(admin, user.id, order.organization_id);
-  const buyer = order.buyer_id === user.id;
+  const buyer = order.buyer_id === user.id || (!order.buyer_id && order.buyer_email === user.email);
 
   if (!member && !buyer) {
     return NextResponse.json({ error: "Você não pode alterar este pedido." }, { status: 403 });
@@ -131,7 +131,7 @@ export async function DELETE(
   }
 
   const member = await isOrganizationMember(admin, user.id, order.organization_id);
-  const buyer = order.buyer_id === user.id;
+  const buyer = order.buyer_id === user.id || (!order.buyer_id && order.buyer_email === user.email);
 
   if (!member && !buyer) {
     return NextResponse.json({ error: "Você não pode cancelar este pedido." }, { status: 403 });

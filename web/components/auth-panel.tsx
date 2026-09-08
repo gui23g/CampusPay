@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
 
 export function AuthPanel() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -29,6 +31,14 @@ export function AuthPanel() {
     if (result.error) {
       setMessage(result.error.message);
       setLoading(false);
+      return;
+    }
+
+    const next = new URLSearchParams(window.location.search).get("next") || "/app";
+
+    if (result.data.session) {
+      router.replace(next);
+      router.refresh();
       return;
     }
 

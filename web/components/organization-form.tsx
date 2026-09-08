@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { apiRequest } from "@/lib/api-client";
-import { publicEnv } from "@/lib/env";
-import { organization } from "@/lib/mock-data";
 
 type OrganizationResponse = {
   organization: {
@@ -14,11 +12,10 @@ type OrganizationResponse = {
 };
 
 export function OrganizationForm() {
-  const mocksEnabled = publicEnv().enableMocks;
-  const [name, setName] = useState(mocksEnabled ? organization.name : "");
-  const [legalName, setLegalName] = useState(mocksEnabled ? organization.legalName : "");
-  const [institution, setInstitution] = useState(mocksEnabled ? organization.institution : "");
-  const [campus, setCampus] = useState(mocksEnabled ? organization.campus : "");
+  const [name, setName] = useState("");
+  const [legalName, setLegalName] = useState("");
+  const [institution, setInstitution] = useState("");
+  const [campus, setCampus] = useState("");
   const [type, setType] = useState("atlética");
   const [treasuryWallet, setTreasuryWallet] = useState("");
   const [message, setMessage] = useState("");

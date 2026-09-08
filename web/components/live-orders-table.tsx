@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api-client";
 import { formatCents } from "@/lib/currency";
-import { publicEnv } from "@/lib/env";
-import { buyerProfile, orders as mockOrders } from "@/lib/mock-data";
 import { OrderCancelButton } from "@/components/order-actions";
 import { Pill } from "@/components/ui";
 
@@ -42,17 +40,6 @@ type OrdersResponse = {
   mode?: string;
   orders: LiveOrder[];
 };
-
-function normalizeMockOrders(scope: OrdersScope, buyerEmail?: string): LiveOrder[] {
-  const orders =
-    scope === "buyer"
-      ? mockOrders.filter(
-          (order) => order.buyerEmail.toLowerCase() === (buyerEmail || buyerProfile.email).toLowerCase()
-        )
-      : mockOrders;
-
-  return orders.map((order) => ({ ...order }));
-}
 
 function orderBuyer(order: LiveOrder) {
   return order.buyer || order.buyer_email || order.buyerEmail || "Comprador";
@@ -99,10 +86,7 @@ export function LiveOrdersTable({
   buyerEmail?: string;
   showActions?: boolean;
 }) {
-  const mocksEnabled = publicEnv().enableMocks;
-  const [orders, setOrders] = useState<LiveOrder[]>(() =>
-    mocksEnabled ? normalizeMockOrders(scope, buyerEmail) : []
-  );
+  const [orders, setOrders] = useState<LiveOrder[]>([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -122,13 +106,11 @@ export function LiveOrdersTable({
       })
       .catch((error) => {
         if (mounted) {
-          setOrders(mocksEnabled ? normalizeMockOrders(scope, buyerEmail) : []);
+          setOrders([]);
           setMessage(
             error instanceof Error
               ? error.message
-              : mocksEnabled
-                ? "Usando pedidos de demonstração."
-                : "Não foi possível carregar pedidos reais."
+              : "Não foi possível carregar pedidos reais."
           );
         }
       });
@@ -136,7 +118,7 @@ export function LiveOrdersTable({
     return () => {
       mounted = false;
     };
-  }, [buyerEmail, mocksEnabled, scope]);
+  }, [buyerEmail, scope]);
 
   function markCancelled(code: string) {
     setOrders((current) =>

@@ -52,7 +52,7 @@ export function Metric({
 }
 
 export function ProgressBar({ value, max }: { value: number; max: number }) {
-  const percent = Math.max(0, Math.min(100, Math.round((value / max) * 100)));
+  const percent = max > 0 ? Math.max(0, Math.min(100, Math.round((value / max) * 100))) : 0;
 
   return (
     <div className="progress-wrap" aria-label={`${percent}%`}>

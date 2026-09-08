@@ -6,8 +6,6 @@ import { ProductImageUploader } from "@/components/product-image-uploader";
 import { EmptyState, Metric, Pill, Section } from "@/components/ui";
 import { apiRequest } from "@/lib/api-client";
 import { formatCents } from "@/lib/currency";
-import { publicEnv } from "@/lib/env";
-import { campaign as mockCampaign, variants as mockVariants } from "@/lib/mock-data";
 
 type ApiVariant = {
   id?: string;
@@ -69,48 +67,35 @@ function statusLabel(status?: string) {
   return labels[status || ""] || status || "Sem status";
 }
 
-function normalizeCampaign(campaign: ApiCampaign, useMockData: boolean) {
+function normalizeCampaign(campaign: ApiCampaign) {
   const firstProduct = campaign.products?.[0];
   const variants =
     firstProduct?.product_variants?.map((variant) => ({
       id: variant.id || variant.sku || "variant",
       sku: variant.sku || "-",
       label: variant.label || "Variante",
-      priceCents: variant.price_cents ?? (useMockData ? mockCampaign.unitPriceCents : 0),
+      priceCents: variant.price_cents ?? 0,
       ordered: variant.target_quantity ?? 0,
       stock: variant.stock_quantity ?? 0
-    })) ||
-    (useMockData
-      ? mockVariants.map((variant) => ({
-          id: variant.id,
-          sku: variant.sku,
-          label: variant.label,
-          priceCents: mockCampaign.unitPriceCents,
-          ordered: variant.ordered,
-          stock: variant.stock
-        }))
-      : []);
+    })) || [];
 
   return {
     id: campaign.id,
-    slug: campaign.slug || (useMockData ? mockCampaign.slug : campaign.id),
-    title: campaign.title || campaign.name || (useMockData ? mockCampaign.name : "Campanha sem título"),
-    purpose: campaign.purpose || (useMockData ? mockCampaign.purpose : "Propósito não informado."),
+    slug: campaign.slug || campaign.id,
+    title: campaign.title || campaign.name || "Campanha sem título",
+    purpose: campaign.purpose || "Propósito não informado.",
     description: campaign.description || "Pré-venda com pagamento rastreado e retirada no campus.",
     status: campaign.status,
-    minUnits: campaign.min_units ?? campaign.minUnits ?? (useMockData ? mockCampaign.minUnits : 0),
-    goalUnits: campaign.goal_units ?? campaign.goalUnits ?? (useMockData ? mockCampaign.goalUnits : 0),
-    imageUrl: firstProduct?.image_url || (useMockData ? mockCampaign.productImage : ""),
+    minUnits: campaign.min_units ?? campaign.minUnits ?? 0,
+    goalUnits: campaign.goal_units ?? campaign.goalUnits ?? 0,
+    imageUrl: firstProduct?.image_url || "",
     productId: firstProduct?.id,
     variants
   };
 }
 
 export function ManagementCampaignDetail({ campaignId }: { campaignId: string }) {
-  const mocksEnabled = publicEnv().enableMocks;
-  const [campaign, setCampaign] = useState<ReturnType<typeof normalizeCampaign> | null>(() =>
-    mocksEnabled ? normalizeCampaign({ ...mockCampaign, id: campaignId, title: mockCampaign.name }, true) : null
-  );
+  const [campaign, setCampaign] = useState<ReturnType<typeof normalizeCampaign> | null>(null);
   const [message, setMessage] = useState("");
   const [loadingStatus, setLoadingStatus] = useState(false);
 
@@ -120,27 +105,19 @@ export function ManagementCampaignDetail({ campaignId }: { campaignId: string })
     void apiRequest<CampaignResponse>(`/api/campaigns/${campaignId}`)
       .then((response) => {
         if (!mounted) return;
-        setCampaign(normalizeCampaign(response.campaign, response.mode === "mock" || mocksEnabled));
+        setCampaign(normalizeCampaign(response.campaign));
         setMessage(response.mode === "mock" ? "Modo mock ativo: exibindo campanha de demonstração." : "");
       })
       .catch((error) => {
         if (!mounted) return;
-        setCampaign(
-          mocksEnabled ? normalizeCampaign({ ...mockCampaign, id: campaignId, title: mockCampaign.name }, true) : null
-        );
-        setMessage(
-          error instanceof Error
-            ? error.message
-            : mocksEnabled
-              ? "Usando campanha de demonstração."
-              : "Não foi possível carregar a campanha real."
-        );
+        setCampaign(null);
+        setMessage(error instanceof Error ? error.message : "Não foi possível carregar a campanha real.");
       });
 
     return () => {
       mounted = false;
     };
-  }, [campaignId, mocksEnabled]);
+  }, [campaignId]);
 
   async function updateStatus(status: string) {
     if (!campaign) return;
@@ -152,7 +129,7 @@ export function ManagementCampaignDetail({ campaignId }: { campaignId: string })
         method: "PATCH",
         body: { status }
       });
-      setCampaign((current) => ({ ...current, status }));
+      setCampaign((current) => (current ? { ...current, status } : current));
       setMessage("Status atualizado.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Não foi possível atualizar o status.");
@@ -170,7 +147,7 @@ export function ManagementCampaignDetail({ campaignId }: { campaignId: string })
       await apiRequest(`/api/campaigns/${campaign.id}`, {
         method: "DELETE"
       });
-      setCampaign((current) => ({ ...current, status: "cancelled" }));
+      setCampaign((current) => (current ? { ...current, status: "cancelled" } : current));
       setMessage("Campanha cancelada.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Não foi possível cancelar a campanha.");
@@ -274,22 +251,10 @@ export function ManagementCampaignDetail({ campaignId }: { campaignId: string })
       <Section title="Unit economics" eyebrow="Financeiro">
         <div className="metrics-grid">
           <Metric label="Preço unitário" value={firstPrice} money />
-          {mocksEnabled ? (
-            <>
-              <Metric label="Fornecedor por unidade" value={mockCampaign.supplierQuoteCents} money />
-              <Metric label="Taxa estimada" value={mockCampaign.platformFeeCents} money />
-              <Metric
-                label="Margem unitária"
-                value={firstPrice - mockCampaign.supplierQuoteCents - mockCampaign.platformFeeCents}
-                money
-              />
-            </>
-          ) : (
-            <EmptyState
-              title="Custos ainda não cadastrados"
-              body="O schema real já separa ledger e produção; custos entram como lançamentos financeiros confirmados."
-            />
-          )}
+          <EmptyState
+            title="Custos ainda não cadastrados"
+            body="Custos entram como lançamentos financeiros confirmados na tesouraria da campanha."
+          />
         </div>
       </Section>
     </>

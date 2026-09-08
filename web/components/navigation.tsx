@@ -54,7 +54,7 @@ export function TopBar({
 
       <div className="top-actions">
         {audience === "management" ? (
-          <Link className="ghost-button" href={`/campus/${organization.campusSlug}`}>
+          <Link className="ghost-button" href={`/campus/${defaultCampusSlug}`}>
             Ver marketplace
           </Link>
         ) : audience === "buyer" ? (
@@ -63,7 +63,7 @@ export function TopBar({
           </Link>
         ) : (
           <Link className="ghost-button" href={`/campus/${defaultCampusSlug}`}>
-            Ver marketplace
+            Voltar ao campus
           </Link>
         )}
         <SessionBadge />

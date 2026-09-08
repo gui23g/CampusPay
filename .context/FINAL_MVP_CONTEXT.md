@@ -18,19 +18,21 @@ npm run dev
 Rotas de validação:
 
 - `/app`
-- `/app/campaigns/camiseta-2026`
+- `/app/campaigns/new`
+- `/app/campaigns/:id`
 - `/app/orders`
 - `/app/inventory`
 - `/app/pickup`
 - `/app/finance`
 - `/app/users`
 - `/app/logs`
-- `/app/reports/camiseta-2026`
+- `/app/reports/latest`
+- `/app/reports/:publicId`
 - `/campus/inteli-sp`
-- `/c/camisa-atletica-2026`
+- `/c/:campaignSlug`
 - `/me`
 - `/me/orders`
-- `/reports/rel-camiseta-2026`
+- `/reports/:publicId`
 
 ## O que já existe
 
@@ -44,7 +46,9 @@ Rotas de validação:
 - APIs sensíveis para confirmação de pagamento, retirada e relatório.
 - Upload de imagem em `web/components/product-image-uploader.tsx`, com persistência da URL no produto quando Supabase está ligado.
 - Marketplace por campus em `web/components/campus-campaign-list.tsx`, alimentado por `/api/campaigns`.
-- Checkout Pix/Solana em `web/components/checkout-card.tsx`, alimentado por `/api/campaigns` e `/api/products`, com fallback mock.
+- Checkout Pix/Solana em `web/components/checkout-card.tsx`, alimentado por `/api/campaigns` e `/api/products`, com fallback mock apenas quando `NEXT_PUBLIC_ENABLE_MOCKS=true`.
+- Leituras reais de gestão em `/api/management/overview`, `/api/inventory`, `/api/finance`, `/api/audit-events` e `/api/reports/:publicId`.
+- `AuthGate` protegendo `/app/*` e `/me/*` quando mocks estão desligados.
 - URL Solana Pay gerada em `web/lib/solana.ts`.
 - Reference Solana gerada como public key base58 em `web/lib/server-hash.ts`.
 - JSON canônico e SHA-256 em `web/lib/report.ts`.
@@ -66,7 +70,7 @@ Para sair do mock:
 6. Trocar `NEXT_PUBLIC_ENABLE_MOCKS=false`.
 7. Validar os fluxos reais: campus -> checkout -> pedido -> pagamento -> retirada -> relatório.
 
-Observação: os route handlers já existem para os fluxos principais. O próximo trabalho é ligar dados reais do piloto, refinar regras específicas e substituir visões analíticas que ainda usam agregados de demonstração.
+Observação: os route handlers já existem para os fluxos principais e as telas finais deixam de renderizar dados demo quando `NEXT_PUBLIC_ENABLE_MOCKS=false`. O próximo trabalho é refinar regras específicas do piloto, webhooks Pix, watcher Solana e formulários operacionais avançados.
 
 ## Fronteiras obrigatórias
 
@@ -83,4 +87,4 @@ Observação: os route handlers já existem para os fluxos principais. O próxim
 
 ## Próxima task recomendada
 
-Implementar Supabase Auth + sessão + RBAC e trocar a leitura da rota `/app` de mock para query server-side.
+Validar o E2E com o Supabase real do time: login, organização, campanha, marketplace, checkout, confirmação de pagamento, retirada e relatório.
